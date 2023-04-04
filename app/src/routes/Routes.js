@@ -1,0 +1,22 @@
+import React, {Component} from 'react';
+import {BrowserRouter as Routes, Route} from "react-router-dom";
+import {Home} from "../controllers/Home";
+import {Profile} from "../controllers/Profile";
+import {Login} from "../controllers/Login";
+
+class Routes extends Component {
+    render() {
+        return (
+            <Routes key="router">
+                {/* Exact exige que se matchee exactamente la url para renderizar su contenido */}
+                <Route exact path={"/"} component={Login}/>
+                <Route exact path={"/home"} component={Home}/>
+                <Route exact path={"/profile"} component={Profile}/>
+            </Routes>
+        )
+    }
+
+
+}
+
+export default Routes;
