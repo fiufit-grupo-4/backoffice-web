@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import logo from '../assets/img/logo.svg';
+import {Button,ButtonGroup} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
+import logo from '../assets/img/admin.png';
 import "../assets/css/Home.css";
 
 export class Home extends Component {
@@ -8,12 +10,12 @@ export class Home extends Component {
             <div className="App">
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
-                    <p>
-                        Edit <code>src/App.js</code> and save to reload.
-                    </p>
-                    <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-                        Learn React
-                    </a>
+                    <h3>FiuFit</h3>
+                    <p> Administration Mode</p>
+                    <ButtonGroup>
+                        <Button variant="primary"  as={Link} to="/login"> Login</Button>
+                        <Button variant="success"  as={Link} to="/signup"> Signup</Button>
+                    </ButtonGroup>
                 </header>
             </div>
         )
