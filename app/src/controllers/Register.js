@@ -4,8 +4,9 @@ import { useState} from 'react'
 import { Form, Button ,InputGroup} from 'react-bootstrap';
 import logo from "../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
+import Sidebar from './SideBar';
 
-function Signup() {
+function Register() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
@@ -25,17 +26,19 @@ function Signup() {
       console.log('Email:', email);
       console.log('Password:', password);
       console.log('Repeated Password:', confirmPassword);
-      navigate('/');
+      navigate('/home');
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-    <img src={logo} style={{ width: '300px' }} />
+    <>
+    <Sidebar title={"Admin Registration"}/>
+    <div className="d-flex justify-content-center align-items-center" style={{ display:'flex'}}>
+      <img src={logo} style={{ width: '300px' }} />
         <Form style={{ width: '300px'}} onSubmit={handleSubmit} >
             
-            <h2 className="mb-3">Admin SignUp</h2>
-
+            <br></br>
+            <br></br>
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <InputGroup hasValidation>
@@ -100,15 +103,13 @@ function Signup() {
             <Button variant="primary" type="submit" className="w-100 mt-3 mb-3" >
                 Sign Up
             </Button>
-            <p>
-                Already have an account? <Link style= {{color:"#3498db"}}  to="/login">Login</Link>
-            </p>
         </Form>
     </div> 
+    </>
   );
 }
 
-export default Signup;
+export default Register;
 
 
 /*

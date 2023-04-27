@@ -19,7 +19,7 @@ function Login() {
     const password = event.target.password.value;
     console.log('Email:', email);
     console.log('Password:', password);
-    navigate('/');
+    navigate('/home');
   };
 
 
@@ -64,9 +64,6 @@ function Login() {
             <Button variant="primary" type="submit" className="w-100 mt-3 mb-3" >
                 Submit
             </Button>
-            <p>
-                Don't have an account? <Link to="/signup">Sign up</Link>
-            </p>
         </Form>
     </div> 
 
