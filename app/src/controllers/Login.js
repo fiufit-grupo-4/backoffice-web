@@ -32,11 +32,15 @@ function Login() {
             <h2 className="mb-3">Admin Login</h2>
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <InputGroup>
+                <InputGroup hasValidation>
                   <InputGroup.Text >
                     <IoMailOutline />
                   </InputGroup.Text>
-                  <Form.Control type="email" placeholder="Enter email" name = "email"/>
+                  <Form.Control required type="email" placeholder="Enter email" name = "email"/>
+                  <Form.Control.Feedback type="invalid">
+                    Please choose a username.
+                  </Form.Control.Feedback>
+                
                 </InputGroup>
                 
             </Form.Group>
@@ -48,6 +52,7 @@ function Login() {
                       {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
                   </InputGroup.Text>
                   <Form.Control
+                    required
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     name = "password"

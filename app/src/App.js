@@ -1,11 +1,11 @@
 import './assets/css/App.css';
 import Router from './routes/Routes';
-
+import Bootstrap from './assets/css/bootstrap/bootstrap.css';
+//"https://bootswatch.com/5/darkly/bootstrap.min.css"
 function App() {
   return (
     <div>
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"></link>
-      <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.min.css"></link>
+      <link rel="stylesheet" href={Bootstrap}></link>
       <Router></Router>
     </div>
   );

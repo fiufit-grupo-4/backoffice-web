@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import logo from '../assets/img/admin.png';
 import "../assets/css/Home.css";
 
-export class Home extends Component {
+export class Index extends Component {
     render() {
         return (
             <div className="App">
