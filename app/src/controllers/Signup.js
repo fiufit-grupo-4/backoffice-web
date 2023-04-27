@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link,useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { Form, Button } from 'react-bootstrap';
+import { useState} from 'react'
+import { Form, Button ,InputGroup} from 'react-bootstrap';
 import logo from "../assets/img/admin.png";
+import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
 
 function Signup() {
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   const navigate = useNavigate();
@@ -16,10 +18,11 @@ function Signup() {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    const username = event.target.username.value;
-    console.log('Password:', password);
+    const repeat_password = event.target.repeat_password.value;
+
     console.log('Email:', email);
     console.log('Password:', password);
+    console.log('Repeated Password:', repeat_password);
     navigate('/');
   };
 
@@ -32,20 +35,46 @@ function Signup() {
 
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" name = "email"/>
+                <InputGroup>
+                  <InputGroup.Text >
+                    <IoMailOutline />
+                  </InputGroup.Text>
+                  <Form.Control type="email" placeholder="Enter email" name = "email"/>
+                </InputGroup>
+                
             </Form.Group>
-
-            <Form.Group controlId="formBasicUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="input" placeholder="Enter username" name = "username"/>
-            </Form.Group>
-
-            
 
             <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" name = "password"/>
+                <InputGroup>
+                  <InputGroup.Text onClick={toggleShowPassword}>
+                      {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                  </InputGroup.Text>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    name = "password"
+                  />
+                </InputGroup>
+
             </Form.Group>
+            
+            <Form.Group controlId="formBasicRepeatedPassword">
+                <Form.Label>Repeat your Password</Form.Label>
+                <InputGroup>
+                  <InputGroup.Text onClick={toggleShowPassword}>
+                      {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                  </InputGroup.Text>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Repeat your Password"
+                    name = "repeat_password"
+                  />
+                </InputGroup>
+
+            </Form.Group>
+
+        
 
             <Button variant="primary" type="submit" className="w-100 mt-3 mb-3" >
                 Sign Up
