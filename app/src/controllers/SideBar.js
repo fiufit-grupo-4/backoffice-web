@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import {Button,Container,Form,Nav,Navbar,NavDropdown,Offcanvas} from 'react-bootstrap';
+import {Button,Container,Form,Nav,Navbar,NavDropdown,Offcanvas,Card} from 'react-bootstrap';
 import logo from "../assets/img/fiticon.png";
 import {useNavigate } from 'react-router-dom';
-import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
 
 function Sidebar({title}) {
     const navigate = useNavigate();
@@ -18,10 +17,10 @@ function Sidebar({title}) {
             <Container fluid>
 
               <Navbar.Toggle variant ={"warning"} aria-controls={`offcanvasNavbar-expand-${expand}`} />
-              <h4 style={{ color: 'white' }}>{title}</h4>
+              <h2 style={{ color: 'white' }}>{title}</h2>
               <Navbar.Brand href="/home" className= "ml-auto">
                 <h4 style={{ color: 'white' }}>
-                <img src={logo} style={{ width: '65px' }} />
+                <img src={logo} style={{ width: '100px' }} />
                 </h4>
               </Navbar.Brand>
               
@@ -30,14 +29,16 @@ function Sidebar({title}) {
                 aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
                 placement="start"
               >
-                <Offcanvas.Header closeButton>
+                <Offcanvas.Header closeButton> 
+                 <Container style={{ textAlign:"center" }} >
                   <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} style={{ color: '#f39c12' }} >
                     FiuFit - Administration Mode
                   </Offcanvas.Title>
+                  </Container>
                 </Offcanvas.Header>
 
                 <Offcanvas.Body>
-                  <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav className="justify-content-end flex-grow-1 pe-3" style={{alignItems:"center"}}>
                   <Container>
                   <Form className="d-flex">
                     <Form.Control
@@ -49,15 +50,15 @@ function Sidebar({title}) {
                     <Button variant="primary">Search</Button>
                   </Form>
                     <br></br>
-                    
-                    <Nav.Link href="/home" style={{ display:'inline-flex', alignItems: 'center' }}>  
+                    <Container>
+                    <Nav.Link href="/home" >  
                         Home
                     </Nav.Link>
                     <Nav.Link href="/register">Register New Admin</Nav.Link>
                     <Nav.Link href="/users">Users</Nav.Link>
                     <Nav.Link href="/trainings">Trainings</Nav.Link>
                     <NavDropdown
-                      title="Dropdown"
+                      title="Settings"
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
                     >
                       <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
@@ -69,9 +70,11 @@ function Sidebar({title}) {
                         Something else here
                       </NavDropdown.Item>
                     </NavDropdown>
-
+                    
                     </Container>
-                    <Button variant="secondary" onClick={handleLogOut}>Log Out</Button>
+                    <Button variant="secondary" className="mt-3" style={{width:"100%"}}  onClick={handleLogOut}  >Log Out</Button>
+                    </Container>
+                    
                   </Nav>
                   
                 </Offcanvas.Body>
