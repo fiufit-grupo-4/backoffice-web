@@ -15,12 +15,11 @@ function Sidebar({title}) {
         {[false].map((expand) => (
           <Navbar key={expand} bg="primary" expand={expand} className="mb-3">
             <Container fluid>
-
               <Navbar.Toggle variant ={"warning"} aria-controls={`offcanvasNavbar-expand-${expand}`} />
-              <h2 style={{ color: 'white' }}>{title}</h2>
+              <h2 style={{ color: 'white',margin:"auto" }}>{title}</h2>
               <Navbar.Brand href="/home" className= "ml-auto">
                 <h4 style={{ color: 'white' }}>
-                <img src={logo} style={{ width: '100px' }} />
+                <img src={logo} style={{ width: '100px',margin:"auto" }} />
                 </h4>
               </Navbar.Brand>
               

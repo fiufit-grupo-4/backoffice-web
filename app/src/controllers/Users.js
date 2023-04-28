@@ -5,24 +5,42 @@ import { Link } from 'react-router-dom';
 
 export default function Users() {
     //const [users, setUsers] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [userToBlock, setUserToBlock] = useState(null);
 
     const users = [
         {   id:"1",
             name:"Juan",
-            rol:"Trainer"
+            email:"juan@gmail.com",
+            rol:"Trainer",
+            phone:8003333,
+            address:"Calle 1234",
+            company: "CGT"
         },
         {
             id:"2",
             name:"Domingo",
-            rol:"Atleta"
+            email:"domingo17o@gmail.com",
+            rol:"Athlete",
+            phone:8003333,
+            address:"Calle 1234",
+            company: "CGT"
         },
         {
             id:"3",
             name:"Perón",
-            rol:"Trainer"
-        },
+            email:"peron@gmail.com",
+            rol:"Trainer",
+            phone:8003333,
+            address:"Calle 1234",
+            company: "CGT"
+        },{
+          id:"4",
+          name:"Jesus",
+          email:"jesus@gmail.com",
+          rol:"Admin",
+          phone:8003333,
+          address:"Calle 1234",
+          company: "Jesus SA"
+        }
 
     ]
 
@@ -34,79 +52,39 @@ export default function Users() {
           setUsers(data);
         }
         getUsers();
-    }, []);*/
-
-
-    function handleBlockUser(user) {
-        setUserToBlock(user);
-        setShowModal(true);
-    }
-
-    function handleConfirmBlockUser() {
-        // hacer petición para bloquear usuario
-        console.log(`Usuario ${userToBlock.name} bloqueado`);
-        setShowModal(false);
-    }
-
-    function handleCancelBlockUser() {
-        setUserToBlock(null);
-        setShowModal(false);
-    }  
+    }, []);*/  
 
     return (
       <div>
         <Sidebar title={"Users"} />
         <Container style = {{justifyContent:"center",margin: "auto",alignItems: 'center',width:"80%",alignSelf:"center",textAlign:"center" }}>
 
-
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered  hover   rowkey="Id">
             <thead>
-                <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Rol</th>
-                <th>Options</th>
-                <th>Options</th>
+                <tr style={{backgroundColor:"#fd7e14"}}>
+                  <th >Id</th>
+                  <th >Name</th>
+                  <th >Rol</th>
+                  <th >Options</th>
                 </tr>
             </thead>
             <tbody>
             {users.map(user => (
-                <>
-                <tr>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.rol}</td>
-                <td>    
-                    <Link to={`/users/${user.id}`}>Ver Perfil</Link>
-                </td>
-                <td>
-                    <ButtonGroup>       
-                        <Button variant="danger" onClick={() => handleBlockUser(user)}>
-                        Bloquear Usuario
-                        </Button>
-                    </ButtonGroup> 
-                    </td>
+                <tr key = {user.id} variant="danger">
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.rol}</td>
+                  <td>    
+                      <Link 
+                        to= { `/users/${user.id}`}
+                        state={{user: user}}>
+                        See Profile
+                      </Link>
+                  </td>
                 </tr>
-                </>
             ))}
             </tbody>
         </Table>
-        <Modal show={showModal} onHide={handleCancelBlockUser}>
-            <Modal.Header closeButton>
-            <Modal.Title>Confirmación de Bloqueo de Usuario</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-            ¿Estás seguro que quieres bloquear al usuario {userToBlock && userToBlock.name}?
-            </Modal.Body>
-            <Modal.Footer>
-            <Button variant="secondary" onClick={handleCancelBlockUser}>
-                Cancelar
-            </Button>
-            <Button variant="danger" onClick={handleConfirmBlockUser}>
-                Bloquear
-            </Button>
-            </Modal.Footer>
-        </Modal>
       </Container>       
       </div>
     );
