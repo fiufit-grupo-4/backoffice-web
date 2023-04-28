@@ -25,8 +25,8 @@ function Login() {
 
   return (
  
-    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-    <img src={logo} style={{ width: '300px' }} />
+    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh',margin:"auto" }}>
+        <img src={logo} style={{ width: '300px',marginRight:15 }} />
         <Form style={{ width: '300px'}} onSubmit={handleSubmit} >
             
             <h2 className="mb-3">Admin Login</h2>
