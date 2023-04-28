@@ -33,8 +33,8 @@ function Register() {
   return (
     <>
     <Sidebar title={"Admin Registration"}/>
-    <div className="d-flex justify-content-center align-items-center" style={{ display:'flex'}}>
-      <img src={logo} style={{ width: '300px' }} />
+    <div className="d-flex justify-content-center align-items-center" style={{ display:'flex',margin:"auto"}}>
+       <img src={logo} style={{ width: '300px',marginRight:20 }} />
         <Form style={{ width: '300px'}} onSubmit={handleSubmit} >
             
             <br></br>
