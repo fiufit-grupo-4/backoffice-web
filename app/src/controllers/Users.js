@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, ListGroup, Button, Modal,Table,ButtonGroup, Container } from 'react-bootstrap';
+import { Card, Form,Table, Container } from 'react-bootstrap';
 import Sidebar from './SideBar';
 import { Link } from 'react-router-dom';
 
 export default function Users() {
     //const [users, setUsers] = useState([]);
+    const [nameFilter, setNameFilter] = useState('');
+    const [roleFilter, setRoleFilter] = useState('');
 
     const users = [
         {   id:"1",
@@ -44,6 +46,25 @@ export default function Users() {
 
     ]
 
+    // Esta función se llamará cada vez que se cambie el valor del filtro de nombre
+    function handleNameFilterChange(event) {
+      setNameFilter(event.target.value);
+    }
+
+    // Esta función se llamará cada vez que se cambie el valor del filtro de rol
+    function handleRoleFilterChange(event) {
+      setRoleFilter(event.target.value);
+    }
+
+    // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
+    function getFilteredUsers() {
+      return users.filter((user) => {
+        const nameMatches = user.name.toLowerCase().includes(nameFilter.toLowerCase());
+        const roleMatches = user.rol.toLowerCase().includes(roleFilter.toLowerCase());
+        return nameMatches && roleMatches;
+      });
+    }
+
     /*
     useEffect(() => {
         async function getUsers() {
@@ -57,6 +78,31 @@ export default function Users() {
     return (
       <div>
         <Sidebar title={"Users"} />
+
+        <div className="card mt-3" style = {{justifyContent:"center",margin: "auto",width:"60%",alignSelf:"center" }}>
+          <div style = {{justifyContent:"center",margin: "auto",width:"80%",textAlign:"center" }} >
+            <br></br>
+            <h5> Users Filter  </h5>
+          </div>
+          <div className="card-body">
+            <Form>
+              <Form.Group>
+                <Form.Label>Nombre</Form.Label>
+                <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
+              </Form.Group>
+              <Form.Group controlId="rol">
+                <Form.Label>Rol:</Form.Label>
+                <Form.Select defaultValue="" onChange={handleRoleFilterChange}>
+                  <option value="admin">Admin</option>
+                  <option value="athlete">Atleta</option>
+                  <option value="trainer">Trainer</option>
+                  <option value="">No filter</option>
+                </Form.Select>
+              </Form.Group>
+            </Form>
+          </div>
+        </div>
+        <br></br>
         <Container style = {{justifyContent:"center",margin: "auto",alignItems: 'center',width:"80%",alignSelf:"center",textAlign:"center" }}>
 
         <Table striped bordered  hover   rowkey="Id">
@@ -69,7 +115,7 @@ export default function Users() {
                 </tr>
             </thead>
             <tbody>
-            {users.map(user => (
+            {getFilteredUsers().map(user => (
                 <tr key = {user.id} variant="danger">
                   <td>{user.id}</td>
                   <td>{user.name}</td>
@@ -92,80 +138,77 @@ export default function Users() {
 
 
   /*
-  import React, { useState, useEffect } from 'react';
-import { Card, ListGroup, Button, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+  import { useState, useEffect } from 'react';
+import { Table, Form } from 'react-bootstrap';
 
 function Users() {
   const [users, setUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [userToBlock, setUserToBlock] = useState(null);
+  const [nameFilter, setNameFilter] = useState('');
+  const [roleFilter, setRoleFilter] = useState('');
 
   useEffect(() => {
-    async function getUsers() {
-      const response = await fetch('https://api.example.com/users');
-      const data = await response.json();
-      setUsers(data);
-    }
-
-    getUsers();
+    // Aquí harías una llamada a tu API para obtener los datos de los usuarios
+    // y luego los guardarías en el estado con setUsers
   }, []);
 
-  function handleBlockUser(user) {
-    setUserToBlock(user);
-    setShowModal(true);
+  // Esta función se llamará cada vez que se cambie el valor del filtro de nombre
+  function handleNameFilterChange(event) {
+    setNameFilter(event.target.value);
   }
 
-  function handleConfirmBlockUser() {
-    // hacer petición para bloquear usuario
-    console.log(`Usuario ${userToBlock.name} bloqueado`);
-    setShowModal(false);
+  // Esta función se llamará cada vez que se cambie el valor del filtro de rol
+  function handleRoleFilterChange(event) {
+    setRoleFilter(event.target.value);
   }
 
-  function handleCancelBlockUser() {
-    setUserToBlock(null);
-    setShowModal(false);
+  // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
+  function getFilteredUsers() {
+    return users.filter((user) => {
+      const nameMatches = user.name.toLowerCase().includes(nameFilter.toLowerCase());
+      const roleMatches = user.role.toLowerCase().includes(roleFilter.toLowerCase());
+      return nameMatches && roleMatches;
+    });
   }
 
+  // Renderizas la tabla de usuarios y los controles de filtro
   return (
     <div>
-      <h1>Lista de Usuarios</h1>
-      {users.map(user => (
-        <Card key={user.id} style={{ width: '18rem' }}>
-          <Card.Body>
-            <Card.Title>{user.name}</Card.Title>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <Link to={`/users/${user.id}`}>Ver Perfil</Link>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Button variant="danger" onClick={() => handleBlockUser(user)}>
-                  Bloquear Usuario
-                </Button>
-              </ListGroup.Item>
-            </ListGroup>
-          </Card.Body>
-        </Card>
-      ))}
-      <Modal show={showModal} onHide={handleCancelBlockUser}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmación de Bloqueo de Usuario</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          ¿Estás seguro que quieres bloquear al usuario {userToBlock && userToBlock.name}?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancelBlockUser}>
-            Cancelar
-          </Button>
-          <Button variant="danger" onClick={handleConfirmBlockUser}>
-            Bloquear
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <div className="card">
+        <div className="card-body">
+          <Form>
+            <Form.Group>
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Rol</Form.Label>
+              <Form.Control type="text" value={roleFilter} onChange={handleRoleFilterChange} />
+            </Form.Group>
+          </Form>
+        </div>
+      </div>
+      <Table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Rol</th>
+          </tr>
+        </thead>
+        <tbody>
+          {getFilteredUsers().map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.role}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 }
-  
+
+export default Users;
   
   */
