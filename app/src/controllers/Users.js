@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form,Table, Container } from 'react-bootstrap';
+import { Card, Form,Table, Container,Row, Col } from 'react-bootstrap';
 import Sidebar from './SideBar';
 import { Link } from 'react-router-dom';
 
@@ -131,84 +131,118 @@ export default function Users() {
             ))}
             </tbody>
         </Table>
-      </Container>       
+      </Container> 
+
+
+
+
+      <Card>
+      <Card.Body>
+        <Row>
+          <Col md={3}>
+            <h3>Filtros:</h3>
+            <Form.Group>
+              <Form.Label>Rol:</Form.Label>
+              <Form.Control
+                as="select"
+                value={roleFilter}
+                onChange={handleRoleFilterChange}
+              >
+                <option value="">Todos</option>
+                <option value="Admin">Admin</option>
+                <option value="Atleta">Atleta</option>
+                <option value="Trainer">Trainer</option>
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col md={9}>
+            <h3>Usuarios:</h3>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Nombre</th>
+                  <th>Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getFilteredUsers().map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.rol}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>      
       </div>
     );
   };
 
 
   /*
-  import { useState, useEffect } from 'react';
-import { Table, Form } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Card, Col, Row, Form, Table } from "react-bootstrap";
 
-function Users() {
-  const [users, setUsers] = useState([]);
-  const [nameFilter, setNameFilter] = useState('');
-  const [roleFilter, setRoleFilter] = useState('');
+const UserList = ({ users }) => {
+  const [filterRole, setFilterRole] = useState("");
 
-  useEffect(() => {
-    // Aquí harías una llamada a tu API para obtener los datos de los usuarios
-    // y luego los guardarías en el estado con setUsers
-  }, []);
+  // Filtrar usuarios por rol
+  const filteredUsers = filterRole
+    ? users.filter((user) => user.role === filterRole)
+    : users;
 
-  // Esta función se llamará cada vez que se cambie el valor del filtro de nombre
-  function handleNameFilterChange(event) {
-    setNameFilter(event.target.value);
-  }
-
-  // Esta función se llamará cada vez que se cambie el valor del filtro de rol
-  function handleRoleFilterChange(event) {
-    setRoleFilter(event.target.value);
-  }
-
-  // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
-  function getFilteredUsers() {
-    return users.filter((user) => {
-      const nameMatches = user.name.toLowerCase().includes(nameFilter.toLowerCase());
-      const roleMatches = user.role.toLowerCase().includes(roleFilter.toLowerCase());
-      return nameMatches && roleMatches;
-    });
-  }
-
-  // Renderizas la tabla de usuarios y los controles de filtro
   return (
-    <div>
-      <div className="card">
-        <div className="card-body">
-          <Form>
+    <Card>
+      <Card.Body>
+        <Row>
+          <Col md={3}>
+            <h3>Filtros:</h3>
             <Form.Group>
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
+              <Form.Label>Rol:</Form.Label>
+              <Form.Control
+                as="select"
+                value={filterRole}
+                onChange={(e) => setFilterRole(e.target.value)}
+              >
+                <option value="">Todos</option>
+                <option value="Admin">Admin</option>
+                <option value="Atleta">Atleta</option>
+                <option value="Trainer">Trainer</option>
+              </Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label>Rol</Form.Label>
-              <Form.Control type="text" value={roleFilter} onChange={handleRoleFilterChange} />
-            </Form.Group>
-          </Form>
-        </div>
-      </div>
-      <Table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Rol</th>
-          </tr>
-        </thead>
-        <tbody>
-          {getFilteredUsers().map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>{user.role}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+          </Col>
+          <Col md={9}>
+            <h3>Usuarios:</h3>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Nombre</th>
+                  <th>Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.role}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
-}
+};
 
-export default Users;
+export default UserList;
   
   */
