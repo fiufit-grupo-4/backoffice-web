@@ -78,7 +78,7 @@ export default function Users() {
     return (
       <div>
         <Sidebar title={"Users"} />
-
+      {/* 
         <div className="card mt-3" style = {{justifyContent:"center",margin: "auto",width:"60%",alignSelf:"center" }}>
           <div style = {{justifyContent:"center",margin: "auto",width:"80%",textAlign:"center" }} >
             <br></br>
@@ -132,49 +132,61 @@ export default function Users() {
             </tbody>
         </Table>
       </Container> 
+  */}
 
 
 
-
-      <Card>
+      <Card style= {{width:"90%",margin:"auto"}}>
       <Card.Body>
         <Row>
           <Col md={3}>
-            <h3>Filtros:</h3>
-            <Form.Group>
-              <Form.Label>Rol:</Form.Label>
-              <Form.Control
-                as="select"
-                value={roleFilter}
-                onChange={handleRoleFilterChange}
-              >
-                <option value="">Todos</option>
-                <option value="Admin">Admin</option>
-                <option value="Atleta">Atleta</option>
-                <option value="Trainer">Trainer</option>
-              </Form.Control>
-            </Form.Group>
+            <h3>Filters:</h3>
+            <Form>
+              <Form.Group>
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
+              </Form.Group>
+              <Form.Group controlId="rol">
+                <Form.Label>Rol:</Form.Label>
+                <Form.Select defaultValue="" onChange={handleRoleFilterChange}>
+                  <option value="">All</option>
+                  <option value="admin">Admin</option>
+                  <option value="athlete">Athlete</option>
+                  <option value="trainer">Trainer</option> 
+                </Form.Select>
+              </Form.Group>
+            </Form>
+            
           </Col>
           <Col md={9}>
-            <h3>Usuarios:</h3>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Nombre</th>
-                  <th>Rol</th>
+            <h3>Users:</h3>
+            <br></br>
+            <Table striped bordered  hover   rowkey="Id">
+            <thead>
+                <tr style={{backgroundColor:"#fd7e14"}}>
+                  <th >Id</th>
+                  <th >Name</th>
+                  <th >Rol</th>
+                  <th >Options</th>
                 </tr>
-              </thead>
-              <tbody>
-                {getFilteredUsers().map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>{user.name}</td>
-                    <td>{user.rol}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            </thead>
+            <tbody>
+            {getFilteredUsers().map(user => (
+                <tr key = {user.id} variant="danger">
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.rol}</td>
+                  <td>    
+                      <Link 
+                        to= { `/users/${user.id}`}
+                        state={{user: user}}>
+                        See Profile
+                      </Link>
+                  </td>
+                </tr>
+            ))}
+            </tbody>
+        </Table>
           </Col>
         </Row>
       </Card.Body>
