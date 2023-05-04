@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import {Index} from "../controllers/Index";
-import Login from "../controllers/Login";
-import Register from "../controllers/Register";
+import Login from "../controllers/register/Login";
+import Register from "../controllers/register/Register";
 import Home from "../controllers/Home";
-import Users from "../controllers/Users";
-import UserProfile from '../controllers/UserProfile';
-import Trainings from '../controllers/Trainings';
-import TrainingProfile from '../controllers/TrainingProfile';
+import Users from "../controllers/user/Users";
+import UserProfile from '../controllers/user/UserProfile';
+import Trainings from '../controllers/training/Trainings';
+import TrainingProfile from '../controllers/training/TrainingProfile';
 
 function Router() {
     return (

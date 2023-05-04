@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from './SideBar';
+import Sidebar from '../utils/SideBar';
 import { Card, ListGroup, ListGroupItem, Badge, Button,Modal, Container } from "react-bootstrap";
 import { Link, useParams,useLocation } from "react-router-dom";
 

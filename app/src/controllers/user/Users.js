@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form,Table, Container,Row, Col } from 'react-bootstrap';
-import Sidebar from './SideBar';
+import Sidebar from '../utils/SideBar';
 import { Link } from 'react-router-dom';
 
 export default function Users() {

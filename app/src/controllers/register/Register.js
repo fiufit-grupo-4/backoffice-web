@@ -2,9 +2,9 @@ import React from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { useState} from 'react'
 import { Form, Button ,InputGroup} from 'react-bootstrap';
-import logo from "../assets/img/admin.png";
+import logo from "../../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
-import Sidebar from './SideBar';
+import Sidebar from '../utils/SideBar';
 
 function Register() {
   const [errorMessage, setErrorMessage] = useState("");

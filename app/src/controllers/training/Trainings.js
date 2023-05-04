@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form,Table, Container,Row, Col } from 'react-bootstrap';
-import Sidebar from './SideBar';
+import Sidebar from '../utils/SideBar';
 import { Link } from 'react-router-dom';
 
 export default function Trainings() {
@@ -14,7 +14,7 @@ export default function Trainings() {
         {   id:"1",
             trainer_name:"Juan",
             trainer_id:"1",
-            difficulty:"3",
+            difficulty:"Easy",
             type:"Dolor",
             description:"Lorem ipsum dolor sit amet",
             title: "Fuerza de brazos"
@@ -23,7 +23,7 @@ export default function Trainings() {
             id:"2",
             trainer_name:"Pepito Boxeador",
             trainer_id:"6",
-            difficulty:"4",
+            difficulty:"Medium",
             type:"Cardio",
             description:"Lorem ipsum cardio sit amet",
             title: "Sentadillas"
@@ -32,7 +32,7 @@ export default function Trainings() {
             id:"3",
             trainer_name:"Juan",
             trainer_id:"1",
-            difficulty:"2",
+            difficulty:"Easy",
             type:"Masa",
             description:"Lorem ipsum masa sit amet",
             title: "Abdominales"
@@ -40,7 +40,7 @@ export default function Trainings() {
             id:"4",
             trainer_name:"Pepito boxeador",
             trainer_id:"1",
-            difficulty:"5",
+            difficulty:"Hard",
             type:"Dolor",
             description:"Lorem ipsum dolor sit amet",
             title: "Fuerza de piernas"
@@ -112,11 +112,9 @@ export default function Trainings() {
                 <Form.Label>Difficulty:</Form.Label>
                 <Form.Select defaultValue="" onChange={handleDifficultyFilterChange}>
                   <option value="">All</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option> 
-                  <option value="4">4</option> 
-                  <option value="5">5</option> 
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option> 
                 </Form.Select>
               </Form.Group>
               
