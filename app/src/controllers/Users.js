@@ -78,61 +78,7 @@ export default function Users() {
     return (
       <div>
         <Sidebar title={"Users"} />
-      {/* 
-        <div className="card mt-3" style = {{justifyContent:"center",margin: "auto",width:"60%",alignSelf:"center" }}>
-          <div style = {{justifyContent:"center",margin: "auto",width:"80%",textAlign:"center" }} >
-            <br></br>
-            <h5> Users Filter  </h5>
-          </div>
-          <div className="card-body">
-            <Form>
-              <Form.Group>
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
-              </Form.Group>
-              <Form.Group controlId="rol">
-                <Form.Label>Rol:</Form.Label>
-                <Form.Select defaultValue="" onChange={handleRoleFilterChange}>
-                  <option value="admin">Admin</option>
-                  <option value="athlete">Atleta</option>
-                  <option value="trainer">Trainer</option>
-                  <option value="">No filter</option>
-                </Form.Select>
-              </Form.Group>
-            </Form>
-          </div>
-        </div>
-        <br></br>
-        <Container style = {{justifyContent:"center",margin: "auto",alignItems: 'center',width:"80%",alignSelf:"center",textAlign:"center" }}>
-
-        <Table striped bordered  hover   rowkey="Id">
-            <thead>
-                <tr style={{backgroundColor:"#fd7e14"}}>
-                  <th >Id</th>
-                  <th >Name</th>
-                  <th >Rol</th>
-                  <th >Options</th>
-                </tr>
-            </thead>
-            <tbody>
-            {getFilteredUsers().map(user => (
-                <tr key = {user.id} variant="danger">
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.rol}</td>
-                  <td>    
-                      <Link 
-                        to= { `/users/${user.id}`}
-                        state={{user: user}}>
-                        See Profile
-                      </Link>
-                  </td>
-                </tr>
-            ))}
-            </tbody>
-        </Table>
-      </Container> 
-  */}
+    
 
 
 
@@ -163,7 +109,7 @@ export default function Users() {
             <br></br>
             <Table striped bordered  hover   rowkey="Id">
             <thead>
-                <tr style={{backgroundColor:"#fd7e14"}}>
+                <tr style={{backgroundColor:"#375a7f"}}>
                   <th >Id</th>
                   <th >Name</th>
                   <th >Rol</th>
@@ -196,65 +142,4 @@ export default function Users() {
   };
 
 
-  /*
-import React, { useState } from "react";
-import { Card, Col, Row, Form, Table } from "react-bootstrap";
-
-const UserList = ({ users }) => {
-  const [filterRole, setFilterRole] = useState("");
-
-  // Filtrar usuarios por rol
-  const filteredUsers = filterRole
-    ? users.filter((user) => user.role === filterRole)
-    : users;
-
-  return (
-    <Card>
-      <Card.Body>
-        <Row>
-          <Col md={3}>
-            <h3>Filtros:</h3>
-            <Form.Group>
-              <Form.Label>Rol:</Form.Label>
-              <Form.Control
-                as="select"
-                value={filterRole}
-                onChange={(e) => setFilterRole(e.target.value)}
-              >
-                <option value="">Todos</option>
-                <option value="Admin">Admin</option>
-                <option value="Atleta">Atleta</option>
-                <option value="Trainer">Trainer</option>
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md={9}>
-            <h3>Usuarios:</h3>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Nombre</th>
-                  <th>Rol</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>{user.name}</td>
-                    <td>{user.role}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
-  );
-};
-
-export default UserList;
   
-  */

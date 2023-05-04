@@ -6,6 +6,8 @@ import Register from "../controllers/Register";
 import Home from "../controllers/Home";
 import Users from "../controllers/Users";
 import UserProfile from '../controllers/UserProfile';
+import Trainings from '../controllers/Trainings';
+import TrainingProfile from '../controllers/TrainingProfile';
 
 function Router() {
     return (
@@ -17,6 +19,8 @@ function Router() {
           <Route exact path="/home" element={<Home/>} />
           <Route exact path="/users" element={<Users/>} />
           <Route exact path="/users/:id" element={<UserProfile/>} />
+          <Route exact path="/trainings" element={<Trainings/>} />
+          <Route exact path="/trainings/:id" element={<TrainingProfile/>} />
         </Routes>
       </BrowserRouter>
     );
