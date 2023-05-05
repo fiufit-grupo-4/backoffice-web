@@ -5,6 +5,8 @@ import { Form, Button, InputGroup} from 'react-bootstrap';
 import logo from "../../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
 
+
+
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
@@ -19,6 +21,7 @@ function Login() {
     const password = event.target.password.value;
     console.log('Email:', email);
     console.log('Password:', password);
+    localStorage.setItem("accesToken","true");
     navigate('/home');
   };
 

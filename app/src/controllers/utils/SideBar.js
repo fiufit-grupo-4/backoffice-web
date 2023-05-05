@@ -7,6 +7,7 @@ function Sidebar({title}) {
     const navigate = useNavigate();
 
     const handleLogOut = () => {
+        localStorage.removeItem("accesToken")
         navigate('/');
       };
 
@@ -71,7 +72,7 @@ function Sidebar({title}) {
                     </NavDropdown>
                     
                     </Container>
-                    <Button variant="secondary" className="mt-3" style={{width:"100%"}}  onClick={handleLogOut}  >Log Out</Button>
+                      <Button variant="secondary" className="mt-3" style={{width:"100%"}}  onClick={handleLogOut}  >Log Out</Button>
                     </Container>
                     
                   </Nav>
