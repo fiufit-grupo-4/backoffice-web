@@ -44,7 +44,15 @@ export default function Trainings() {
             type:"Dolor",
             description:"Lorem ipsum dolor sit amet",
             title: "Fuerza de piernas"
-        }
+        },{
+          id:"5",
+          trainer_name:"Roberto conduccion",
+          trainer_id:"13",
+          difficulty:"Hard",
+          type:"Fortalecimiento",
+          description:"Lorem ipsum malianteo sit amet",
+          title: "Espinales"
+      }
 
     ]
 

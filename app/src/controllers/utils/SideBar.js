@@ -54,9 +54,12 @@ function Sidebar({title}) {
                     <Nav.Link href="/home" >  
                         Home
                     </Nav.Link>
-                    <Nav.Link href="/register">Register New Admin</Nav.Link>
+                    
                     <Nav.Link href="/users">Users</Nav.Link>
                     <Nav.Link href="/trainings">Trainings</Nav.Link>
+                    <Nav.Link href="/register">Register New Admin</Nav.Link>
+                    <Nav.Link href="/certify">Certify Trainer</Nav.Link>
+
                     <NavDropdown
                       title="Settings"
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
