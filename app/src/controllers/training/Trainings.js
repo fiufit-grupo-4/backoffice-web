@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form,Table, Container,Row, Col } from 'react-bootstrap';
+import { Card, Form,Table, Container,Row, Col, Spinner } from 'react-bootstrap';
 import Sidebar from '../utils/SideBar';
 import { Link } from 'react-router-dom';
 
 export default function Trainings() {
-    //const [users, setUsers] = useState([]);
+    const [trainings, setTrainings] = useState([]);
     const [nameFilter, setNameFilter] = useState('');
     const [userNameFilter, setUserNameFilter] = useState('');
     const [difficultyFilter, setDifficultyFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
+    /*
     const trainings = [
         {   id:"1",
             trainer_name:"Juan",
@@ -54,7 +58,7 @@ export default function Trainings() {
           title: "Espinales"
       }
 
-    ]
+    ]*/
 
     function handleNameFilterChange(event) {
       setNameFilter(event.target.value);
@@ -77,95 +81,136 @@ export default function Trainings() {
       return trainings.filter((training) => {
         const nameMatches = training.title.toLowerCase().includes(nameFilter.toLowerCase());
         const difficultyMatches = training.difficulty.toLowerCase().includes(difficultyFilter.toLowerCase());
-        const trainerNameMatches = training.trainer_name.toLowerCase().includes(userNameFilter.toLowerCase());
+        //const trainerNameMatches = training.trainer_name.toLowerCase().includes(userNameFilter.toLowerCase());
         const typeMatches = training.type.toLowerCase().includes(typeFilter.toLowerCase());
         
-        return nameMatches && difficultyMatches && trainerNameMatches && typeMatches;
+        return nameMatches && difficultyMatches  && typeMatches //&& trainerNameMatches;
       });
     }
 
-    /*
+    
     useEffect(() => {
-        async function getUsers() {
-          const response = await fetch('https://api.example.com/users');
-          const data = await response.json();
-          setUsers(data);
-        }
-        getUsers();
-    }, []);*/  
+      const url = 'https://api-gateway-fiufit.herokuapp.com/trainings/'
+      const accessToken = localStorage.getItem("accesToken")
+      async function getTrainings() {
+        setLoading(true)
+        fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken,    
+          }
+        }).then(response => {
+          setLoading(false)  
+          if (!response.ok) {
+            setError(true)
+            if(response.status == 401){
+              setErrorMessage("Unhautorized, not valid access token")
+            } else {
+              setErrorMessage("Failed to connect with server")
+            }
+          } else {
+            response.json().then(data => {
+              console.log(data)
+              setTrainings(data);
+            })
+            
+          }
+        })
+        .catch(error => {
+          setError(true)
+          setErrorMessage(error)
+        })
+      }
+      getTrainings();
+    }, []); 
 
     return (
       <div>
         <Sidebar title={"Trainings"} />
 
-      <Card style= {{width:"90%",margin:"auto"}}>
-      <Card.Body>
-        <Row>
-          <Col md={3}>
-            <h3>Filters:</h3>
-            <Form>
-              <Form.Group>
-                <Form.Label>Title:</Form.Label>
-                <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Trainer:</Form.Label>
-                <Form.Control type="text" value={userNameFilter} onChange={handleUserNameFilterChange} />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Type:</Form.Label>
-                <Form.Control type="text" value={typeFilter} onChange={handleTypeFilterChange} />
-              </Form.Group>
-              <Form.Group controlId="rol">
-                <Form.Label>Difficulty:</Form.Label>
-                <Form.Select defaultValue="" onChange={handleDifficultyFilterChange}>
-                  <option value="">All</option>
-                  <option value="Easy">Easy</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Hard">Hard</option> 
-                </Form.Select>
-              </Form.Group>
-              
-            </Form>
+        {loading 
+          ? <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 70 }}>
+              <Spinner animation="border" role="status"  style={{ width: "4rem", height: "4rem" }}>
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
             
-          </Col>
-          <Col md={9}>
-            <h3>Trainings:</h3>
-            <br></br>
-            <Table striped bordered  hover   rowkey="Id">
-            <thead>
-                <tr style={{backgroundColor:"#fd7e14"}}>
-                  <th >Id</th>
-                  <th >Title</th>
-                  <th >Type</th>
-                  <th >Difficulty</th>
-                  <th >Trainer</th>
-                  <th >Options</th>
-                </tr>
-            </thead>
-            <tbody>
-            {getFilteredTrainings().map(training => (
-                <tr key = {training.id} variant="danger">
-                  <td>{training.id}</td>
-                  <td>{training.title}</td>
-                  <td>{training.type}</td>
-                  <td>{training.difficulty}</td>
-                  <td>{training.trainer_name}</td>
-                  <td>    
-                      <Link 
-                        to= { `/trainings/${training.id}`}
-                        state={{training: training}}>
-                        See More
-                      </Link>
-                  </td>
-                </tr>
-            ))}
-            </tbody>
-        </Table>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>      
+          : <>
+          <Card style= {{width:"90%",margin:"auto"}}>
+            <Card.Body>
+              <Row>
+                <Col md={3}>
+                  <h3>Filters:</h3>
+                  <Form>
+                    <Form.Group>
+                      <Form.Label>Title:</Form.Label>
+                      <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Trainer:</Form.Label>
+                      <Form.Control type="text" value={userNameFilter} onChange={handleUserNameFilterChange} />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>Type:</Form.Label>
+                      <Form.Control type="text" value={typeFilter} onChange={handleTypeFilterChange} />
+                    </Form.Group>
+                    <Form.Group controlId="rol">
+                      <Form.Label>Difficulty:</Form.Label>
+                      <Form.Select defaultValue="" onChange={handleDifficultyFilterChange}>
+                        <option value="">All</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option> 
+                      </Form.Select>
+                    </Form.Group>
+                    
+                  </Form>
+                  
+                </Col>
+                <Col md={9}>
+                  <h3>Trainings:</h3>
+                  <br></br>
+                  <Table striped bordered  hover   rowkey="Id">
+                  <thead>
+                      <tr style={{backgroundColor:"#fd7e14"}}>
+                        <th >Title</th>
+                        <th >Type</th>
+                        <th >Difficulty</th>
+                        <th >Trainer</th>
+                        <th >Options</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {getFilteredTrainings().map(training => (
+                      <tr key = {training.id} variant="danger">
+                        <td>{training.title}</td>
+                        <td>{training.type}</td>
+                        <td>{training.difficulty}</td>
+                        <td>{training.trainer_name}</td>
+                        <td>    
+                            <Link 
+                              to= { `/trainings/${training.id}`}
+                              state={{training: training}}>
+                              See More
+                            </Link>
+                        </td>
+                      </tr>
+                  ))}
+                  </tbody>
+              </Table>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card> 
+          {error && (
+            <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 10 }}>
+              <p style = {{fontSize:18,color : "crimson",padding:5}}> {errorMessage} </p>
+            </div>  
+          )}
+          </>
+
+        }
       </div>
     );
   };

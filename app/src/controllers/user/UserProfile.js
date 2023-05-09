@@ -47,28 +47,26 @@ export default function UserProfile() {
   
     return (
       <div>
-        <Sidebar title={user.name + " Profile"}></Sidebar>
+        <Sidebar title={"User Profile"}></Sidebar>
         
         <Card style = {{width:"80%",margin:"auto"}}>
           <Card.Body>
-            <Card.Title>{user.name}</Card.Title>
+            <Card.Title>{user.name + user.lastName}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              {user.email}
+              {user.id}
             </Card.Subtitle>
             <ListGroup className="mb-3">
               <ListGroupItem>
-                <b>Phone:</b> {user.phone}
+                <b>email:</b> {user.mail }
               </ListGroupItem>
               <ListGroupItem>
-                <b>Address:</b> {user.address}
+                <b>Age:</b> {user.age ? user.age : " undefined"}
               </ListGroupItem>
-              <ListGroupItem>
-                <b>Company:</b> {user.company}
-              </ListGroupItem>
+              
             </ListGroup>
             <div>
               <Container style = {{margin:"auto",textAlign:"center"}} >
-                <Button variant="primary"  >Edit Profile</Button>{" "}
+                
                 <Button variant="danger" onClick={() => handleBlockUser(user)}>
                       Block User
                 </Button>

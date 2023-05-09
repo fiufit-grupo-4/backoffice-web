@@ -66,13 +66,12 @@ export default function TrainingProfile() {
                 <b>Trainer:</b> {training.trainer_name}
               </ListGroupItem>
               <ListGroupItem>
-                <b>Trainer Id:</b> {training.trainer_id}
+                <b>Trainer Id:</b> {training.id_trainer}
               </ListGroupItem>
               
             </ListGroup>
             <div>
               <Container style = {{margin:"auto",textAlign:"center"}} >
-                <Button variant="primary"  >Edit Training</Button>{" "}
                 <Button variant="danger" onClick={() => handleBlockTraining(training)}>
                       Block Training
                 </Button>

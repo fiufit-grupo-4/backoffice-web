@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form,Table, Container,Row, Col } from 'react-bootstrap';
+import { Card, Form,Table, Container,Row, Col, Spinner } from 'react-bootstrap';
 import Sidebar from '../utils/SideBar';
 import { Link } from 'react-router-dom';
 
 export default function Users() {
-    //const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
     const [nameFilter, setNameFilter] = useState('');
     const [roleFilter, setRoleFilter] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
+    /*
     const users = [
         {   id:"1",
             name:"Juan",
@@ -44,7 +48,7 @@ export default function Users() {
           company: "Jesus SA"
         }
 
-    ]
+    ]*/
 
     // Esta función se llamará cada vez que se cambie el valor del filtro de nombre
     function handleNameFilterChange(event) {
@@ -59,84 +63,127 @@ export default function Users() {
     // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
     function getFilteredUsers() {
       return users.filter((user) => {
-        const nameMatches = user.name.toLowerCase().includes(nameFilter.toLowerCase());
-        const roleMatches = user.rol.toLowerCase().includes(roleFilter.toLowerCase());
-        return nameMatches && roleMatches;
+        const nameMatches = user.mail.toLowerCase().includes(nameFilter.toLowerCase());
+        //const roleMatches = user.rol.toLowerCase().includes(roleFilter.toLowerCase());
+        return nameMatches //&& roleMatches;
       });
     }
 
-    /*
+    
     useEffect(() => {
+        const url = 'https://api-gateway-fiufit.herokuapp.com/users/'
+        const accessToken = localStorage.getItem("accesToken")
         async function getUsers() {
-          const response = await fetch('https://api.example.com/users');
-          const data = await response.json();
-          setUsers(data);
+          setLoading(true)
+          fetch(url, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + accessToken,    
+            }
+          }).then(response => {
+            setLoading(false)  
+            if (!response.ok) {
+              setError(true)
+              if(response.status == 401){
+                setErrorMessage("Unhautorized, not valid access token")
+              } else {
+                setErrorMessage("Failed to connect with server")
+              }
+            } else {
+              response.json().then(data => {
+                console.log(data)
+                setUsers(data);
+              })
+              
+            }
+          })
+          .catch(error => {
+            setError(true)
+            setErrorMessage(error)
+          })
         }
         getUsers();
-    }, []);*/  
+    }, [])  
 
     return (
       <div>
         <Sidebar title={"Users"} />
     
+        {loading 
+              ? <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 70 }}>
+                  <Spinner animation="border" role="status"  style={{ width: "4rem", height: "4rem" }}>
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </div>
+               
+              : <>
+               <Card style= {{width:"90%",margin:"auto"}}>
+                <Card.Body>
+                  <Row>
+                    <Col md={3}>
+                      <h3>Filters:</h3>
+                      <Form>
+                        <Form.Group>
+                          <Form.Label>Name</Form.Label>
+                          <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
+                        </Form.Group>
+                        <Form.Group controlId="rol">
+                          <Form.Label>Rol:</Form.Label>
+                          <Form.Select defaultValue="" onChange={handleRoleFilterChange}>
+                            <option value="">All</option>
+                            <option value="admin">Admin</option>
+                            <option value="athlete">Athlete</option>
+                            <option value="trainer">Trainer</option> 
+                          </Form.Select>
+                        </Form.Group>
+                      </Form>
+                      
+                    </Col>
+                    <Col md={9}>
+                      <h3>Users:</h3>
+                      <br></br>
+                      <Table striped bordered  hover   rowkey="Id">
+                      <thead>
+                          <tr style={{backgroundColor:"#375a7f"}}>
 
+                            <th >Name</th>
+                            <th >Rol</th>
+                            <th >Options</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      {getFilteredUsers().map(user => (
+                          <tr key = {user.id} variant="danger">
 
+                            <td>{user.mail}</td>
+                            <td>Admin</td>
+                            <td>    
+                                <Link 
+                                  to= { `/users/${user.id}`}
+                                  state={{user: user}}>
+                                  See Profile
+                                </Link>
+                            </td>
+                          </tr>
+                      ))}
+                      </tbody>
+                  </Table>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+                
+                
+                {error && (
+                  <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 10 }}>
+                    <p style = {{fontSize:18,color : "crimson",padding:5}}> {errorMessage} </p>
+                  </div>  
+                )}
+                </>
 
-      <Card style= {{width:"90%",margin:"auto"}}>
-      <Card.Body>
-        <Row>
-          <Col md={3}>
-            <h3>Filters:</h3>
-            <Form>
-              <Form.Group>
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
-              </Form.Group>
-              <Form.Group controlId="rol">
-                <Form.Label>Rol:</Form.Label>
-                <Form.Select defaultValue="" onChange={handleRoleFilterChange}>
-                  <option value="">All</option>
-                  <option value="admin">Admin</option>
-                  <option value="athlete">Athlete</option>
-                  <option value="trainer">Trainer</option> 
-                </Form.Select>
-              </Form.Group>
-            </Form>
-            
-          </Col>
-          <Col md={9}>
-            <h3>Users:</h3>
-            <br></br>
-            <Table striped bordered  hover   rowkey="Id">
-            <thead>
-                <tr style={{backgroundColor:"#375a7f"}}>
-                  <th >Id</th>
-                  <th >Name</th>
-                  <th >Rol</th>
-                  <th >Options</th>
-                </tr>
-            </thead>
-            <tbody>
-            {getFilteredUsers().map(user => (
-                <tr key = {user.id} variant="danger">
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.rol}</td>
-                  <td>    
-                      <Link 
-                        to= { `/users/${user.id}`}
-                        state={{user: user}}>
-                        See Profile
-                      </Link>
-                  </td>
-                </tr>
-            ))}
-            </tbody>
-        </Table>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>      
+            }
+      
       </div>
     );
   };
