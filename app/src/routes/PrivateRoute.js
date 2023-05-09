@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({Component}) => {
-    const access_token = localStorage.getItem("accesToken")
-    const auth = access_token == "true"? true : false;
-    console.log(auth)
-    return auth ? Component : <Navigate to="/" />
+    const accessToken = localStorage.getItem("accesToken")
+    //const auth = access_token == "true"? true : false;
+    //console.log(auth)
+    return accessToken ? Component : <Navigate to="/" />
 }
 
 export default PrivateRoute

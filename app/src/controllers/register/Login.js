@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { useState} from 'react';
-import { Form, Button, InputGroup} from 'react-bootstrap';
+import { Form, Button, InputGroup, Spinner} from 'react-bootstrap';
 import logo from "../../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
 
-
+const ADMIN = 1;
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -16,13 +20,52 @@ function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
+    const url = 'https://api-gateway-fiufit.herokuapp.com/login/'
+    setLoading(true)
+
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
     console.log('Email:', email);
     console.log('Password:', password);
-    localStorage.setItem("accesToken","true");
-    navigate('/home');
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "mail": "username@mail.com",
+        "password": "secure",
+        "role":3,
+      })
+    })
+    .then(response => {
+      setLoading(false)
+      
+      
+      if (!response.ok) {
+        setError(true)
+        if(response.status == 401){
+          setErrorMessage("Invalid username or password")
+        } else {
+          setErrorMessage("Failed to connect with server")
+        }
+      } else {
+        response.json().then(json => {
+          const accesToken = json.access_token
+          console.log(json.access_token)
+          localStorage.setItem("accesToken",accesToken);
+          //localStorage.setItem("accesToken","true");
+          navigate('/home');
+        })
+        
+      }
+    })
+    .catch(error => {
+      setError(true)
+      setErrorMessage(error)
+    })
   };
 
 
@@ -64,9 +107,25 @@ function Login() {
 
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100 mt-3 mb-3" >
-                Submit
-            </Button>
+            {loading 
+              ? <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 10 }}>
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </div>
+               
+              : <>
+                <Button variant="primary" type="submit" className="w-100 mt-3 mb-3" >
+                    Submit
+                </Button>
+                
+                {error && (
+                  <p style = {{fontSize:15,color : "crimson",padding:5}}> {errorMessage} </p>
+                )}
+                </>
+
+            }
+            
         </Form>
     </div> 
 

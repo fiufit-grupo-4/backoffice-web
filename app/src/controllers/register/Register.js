@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { useState} from 'react'
-import { Form, Button ,InputGroup} from 'react-bootstrap';
+import { Form, Button ,InputGroup,Spinner} from 'react-bootstrap';
 import logo from "../../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
 import Sidebar from '../utils/SideBar';
 
+const ADMIN = 1
+
 function Register() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -16,18 +20,47 @@ function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
+    var url = 'https://api-gateway-fiufit.herokuapp.com/signup/';
+    setLoading(true)
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
     const confirmPassword = event.target.confirmPassword.value;
     if (password !== confirmPassword) {
-      setErrorMessage("Las contraseñas no coinciden");
+      setErrorMessage("Passwords Missmatch");
     } else {
       console.log('Email:', email);
       console.log('Password:', password);
       console.log('Repeated Password:', confirmPassword);
-      navigate('/home');
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "mail": email,
+          "password": password,
+          "role": ADMIN,
+        })
+      })
+      .then(response => {
+        setLoading(false)
+        if (!response.ok) {
+          setError(true)
+          setErrorMessage("Failed to connect with server")    
+        } else {
+          navigate('/home');
+        }
+      })
+      .catch(error => {
+        setError(true)
+        setErrorMessage(error)
+      })
+      
     }
+
+
   };
 
   return (
@@ -100,9 +133,23 @@ function Register() {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100 mt-3 mb-3" >
-                Sign Up
-            </Button>
+            {loading 
+              ? <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 10 }}>
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </div>
+               
+              : <>
+                <Button variant="primary" type="submit" className="w-100 mt-3 mb-3" >
+                  Sign Up
+                </Button>
+                
+                {error && (
+                  <p style = {{fontSize:15,color : "crimson",padding:5}}> {errorMessage} </p>
+                )}
+                </>
+            }    
         </Form>
     </div> 
     </>
