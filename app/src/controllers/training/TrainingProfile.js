@@ -63,7 +63,7 @@ export default function TrainingProfile() {
                 <b>Difficulty:</b> {training.difficulty}
               </ListGroupItem>
               <ListGroupItem>
-                <b>Trainer:</b> {training.trainer_name}
+                <b>Trainer:</b> {training.trainer_name ? training.trainer_name : " undefined"}
               </ListGroupItem>
               <ListGroupItem>
                 <b>Trainer Id:</b> {training.id_trainer}

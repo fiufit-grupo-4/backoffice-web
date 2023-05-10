@@ -76,15 +76,20 @@ export default function Trainings() {
         setDifficultyFilter(event.target.value);
     }
 
+    function handleUndefined(value){
+      return value ? value : "undefined"
+
+    }
+
+
     // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
     function getFilteredTrainings() {
       return trainings.filter((training) => {
         const nameMatches = training.title.toLowerCase().includes(nameFilter.toLowerCase());
-        const difficultyMatches = training.difficulty.toLowerCase().includes(difficultyFilter.toLowerCase());
-        //const trainerNameMatches = training.trainer_name.toLowerCase().includes(userNameFilter.toLowerCase());
-        const typeMatches = training.type.toLowerCase().includes(typeFilter.toLowerCase());
-        
-        return nameMatches && difficultyMatches  && typeMatches //&& trainerNameMatches;
+        const difficultyMatches = training.difficulty.toLowerCase().includes(difficultyFilter.toLowerCase());     
+        const trainerNameMatches = handleUndefined(training.trainer_name).toLowerCase().includes(userNameFilter.toLowerCase())  ;
+        const typeMatches = training.type.toLowerCase().includes(typeFilter.toLowerCase());   
+        return nameMatches && difficultyMatches  && typeMatches && trainerNameMatches;
       });
     }
 
@@ -187,7 +192,7 @@ export default function Trainings() {
                         <td>{training.title}</td>
                         <td>{training.type}</td>
                         <td>{training.difficulty}</td>
-                        <td>{training.trainer_name}</td>
+                        <td>{training.trainer_name ? training.trainer_name : "Undefined" }</td>
                         <td>    
                             <Link 
                               to= { `/trainings/${training.id}`}
