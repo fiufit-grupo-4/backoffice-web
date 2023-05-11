@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {Button,Container,Form,Nav,Navbar,NavDropdown,Offcanvas,Card} from 'react-bootstrap';
 import logo from "../../assets/img/fiticon.png";
 import {useNavigate } from 'react-router-dom';
+import { TOKEN } from '../../utils/constants';
 
 function Sidebar({title}) {
     const navigate = useNavigate();
 
     const handleLogOut = () => {
-        localStorage.removeItem("accesToken")
+        localStorage.removeItem(TOKEN)
         navigate('/');
       };
 

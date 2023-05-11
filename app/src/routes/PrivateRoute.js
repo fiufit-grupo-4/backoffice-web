@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
-
+import { TOKEN } from '../utils/constants';
 const PrivateRoute = ({Component}) => {
-    const accessToken = localStorage.getItem("accesToken")
+    const accessToken = localStorage.getItem(TOKEN)
     //const auth = access_token == "true"? true : false;
     //console.log(auth)
     return accessToken ? Component : <Navigate to="/" />

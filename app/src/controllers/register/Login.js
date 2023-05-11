@@ -4,8 +4,8 @@ import { useState} from 'react';
 import { Form, Button, InputGroup, Spinner} from 'react-bootstrap';
 import logo from "../../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
+import { API_GATEWAY,ADMIN,TOKEN } from '../../utils/constants';
 
-const ADMIN = 1;
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +20,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
-    const url = 'https://api-gateway-fiufit.herokuapp.com/login/'
+    const url = API_GATEWAY + 'login/'
     setLoading(true)
 
     event.preventDefault();
@@ -55,7 +55,7 @@ function Login() {
         response.json().then(json => {
           const accesToken = json.access_token
           console.log(json.access_token)
-          localStorage.setItem("accesToken",accesToken);
+          localStorage.setItem(TOKEN,accesToken);
           //localStorage.setItem("accesToken","true");
           navigate('/home');
         })

@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../utils/SideBar';
 import { Card, ListGroup, ListGroupItem, Badge, Button,Modal, Container } from "react-bootstrap";
 import { Link, useParams,useLocation } from "react-router-dom";
-
+import { API_GATEWAY, TOKEN } from '../../utils/constants';
 
 export default function UserProfile() {
     const location = useLocation()
     const user = location.state.user
-
+    const [isBlocked,setBlocked] = useState(false) 
     const [showModal, setShowModal] = useState(false);
     const [userToBlock, setUserToBlock] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    //const { userId } = useParams();
-    //const [user, setUser] = useState(null);
 
     function handleBlockUser(user) {
       setUserToBlock(user);
@@ -21,6 +22,38 @@ export default function UserProfile() {
 
     function handleConfirmBlockUser() {
         // hacer petición para bloquear usuario
+        /*
+        const url = API_GATEWAY + 'users/' + userToBlock.id+  '/block/'
+        const accessToken = localStorage.getItem(TOKEN)
+        console.log(accessToken)
+        setLoading(true)
+        fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken,    
+          }
+        }).then(response => {
+          setLoading(false)  
+          if (!response.ok) {
+            setError(true)
+            if(response.status == 401){
+              setErrorMessage("Unhautorized, not valid access token")
+            } else {
+              setErrorMessage("Failed to connect with server")
+            }
+          } else {
+            response.json().then(data => {
+              console.log(data)   
+              
+            })  
+          }
+        })
+        .catch(error => {
+          setError(true)
+          setErrorMessage(error)
+        })     */
+
         console.log(`Usuario ${userToBlock.name} bloqueado`);
         setShowModal(false);
     }
@@ -51,9 +84,9 @@ export default function UserProfile() {
         
         <Card style = {{width:"80%",margin:"auto"}}>
           <Card.Body>
-            <Card.Title>{user.name + user.lastName}</Card.Title>
+            <Card.Title>{(user.name != undefined && user.lastName != undefined)  ? user.name + user.lastName : "Undefined" }</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              {user.id}
+            <b>ID:</b> {user.id}
             </Card.Subtitle>
             <ListGroup className="mb-3">
               <ListGroupItem>
@@ -81,7 +114,12 @@ export default function UserProfile() {
             </Modal.Header>
             <Modal.Body>
             Are you sure you want to block the user {userToBlock && userToBlock.name}?
+            {error && (
+                  <p style = {{fontSize:15,color : "crimson",padding:5}}> {errorMessage} </p>
+                )}
             </Modal.Body>
+
+            
             <Modal.Footer>
             <Button variant="secondary" onClick={handleCancelBlockUser}>
                 Cancel
@@ -94,6 +132,8 @@ export default function UserProfile() {
         <Container style = {{textAlign:"center",width:"80%",marginTop:10}}>
           <Link to="/users">Back to Users</Link>
         </Container>
+
+
       </div>
     );
 

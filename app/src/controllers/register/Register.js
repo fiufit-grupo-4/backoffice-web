@@ -5,6 +5,7 @@ import { Form, Button ,InputGroup,Spinner} from 'react-bootstrap';
 import logo from "../../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
 import Sidebar from '../utils/SideBar';
+import { API_GATEWAY } from '../../utils/constants';
 
 const ADMIN = 1
 
@@ -20,7 +21,7 @@ function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
-    var url = 'https://api-gateway-fiufit.herokuapp.com/signup/';
+    var url = API_GATEWAY + 'signup/';
     setLoading(true)
     event.preventDefault();
     const email = event.target.email.value;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Form,Table, Container,Row, Col, Spinner } from 'react-bootstrap';
 import Sidebar from '../utils/SideBar';
 import { Link } from 'react-router-dom';
+import { API_GATEWAY, TOKEN } from '../../utils/constants';
 
 export default function Users() {
     const [users, setUsers] = useState([]);
@@ -71,8 +72,8 @@ export default function Users() {
 
     
     useEffect(() => {
-        const url = 'https://api-gateway-fiufit.herokuapp.com/users/'
-        const accessToken = localStorage.getItem("accesToken")
+        const url = API_GATEWAY + 'users/'
+        const accessToken = localStorage.getItem(TOKEN)
         async function getUsers() {
           setLoading(true)
           fetch(url, {
