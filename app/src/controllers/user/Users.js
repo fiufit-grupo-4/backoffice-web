@@ -2,54 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Card, Form,Table, Container,Row, Col, Spinner } from 'react-bootstrap';
 import Sidebar from '../utils/SideBar';
 import { Link } from 'react-router-dom';
-import { API_GATEWAY, TOKEN } from '../../utils/constants';
+import { API_GATEWAY, TOKEN, ADMIN, ATHLETE, TRAINER } from '../../utils/constants';
 
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [nameFilter, setNameFilter] = useState('');
     const [roleFilter, setRoleFilter] = useState('');
+    const [stateFilter, setStateFilter] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    /*
-    const users = [
-        {   id:"1",
-            name:"Juan",
-            email:"juan@gmail.com",
-            rol:"Trainer",
-            phone:8003333,
-            address:"Calle 1234",
-            company: "CGT"
-        },
-        {
-            id:"2",
-            name:"Domingo",
-            email:"domingo17o@gmail.com",
-            rol:"Athlete",
-            phone:8003333,
-            address:"Calle 1234",
-            company: "CGT"
-        },
-        {
-            id:"3",
-            name:"Perón",
-            email:"peron@gmail.com",
-            rol:"Trainer",
-            phone:8003333,
-            address:"Calle 1234",
-            company: "CGT"
-        },{
-          id:"4",
-          name:"Jesus",
-          email:"jesus@gmail.com",
-          rol:"Admin",
-          phone:8003333,
-          address:"Calle 1234",
-          company: "Jesus SA"
-        }
-
-    ]*/
 
     // Esta función se llamará cada vez que se cambie el valor del filtro de nombre
     function handleNameFilterChange(event) {
@@ -60,14 +23,36 @@ export default function Users() {
     function handleRoleFilterChange(event) {
       setRoleFilter(event.target.value);
     }
+    
+    function handleStateFilterChange(event) {
+      setStateFilter(event.target.value);
+    }
 
     // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
     function getFilteredUsers() {
       return users.filter((user) => {
         const nameMatches = user.mail.toLowerCase().includes(nameFilter.toLowerCase());
-        //const roleMatches = user.rol.toLowerCase().includes(roleFilter.toLowerCase());
-        return nameMatches //&& roleMatches;
+        const roleMatches = getRole(user.role).toLowerCase().includes(roleFilter.toLowerCase());
+        const stateMatches = isBlocked(user.blocked).toLowerCase().includes(stateFilter.toLowerCase());
+        return nameMatches && roleMatches && stateMatches;
       });
+    }
+
+    function getRole(role){
+      if (role == ADMIN){
+        return "Admin"
+      } else if (role == TRAINER){
+        return "Trainer"
+      } else if (role == ATHLETE){
+        return "Athlete"
+      } else {
+        return "Undefined"
+      }
+    }
+    function isBlocked(boolean){
+
+      return boolean ? "Blocked" : "Available"
+      
     }
 
     
@@ -138,6 +123,14 @@ export default function Users() {
                             <option value="trainer">Trainer</option> 
                           </Form.Select>
                         </Form.Group>
+                        <Form.Group controlId="state">
+                          <Form.Label>State:</Form.Label>
+                          <Form.Select defaultValue="" onChange={handleStateFilterChange}>
+                            <option value="">All</option>
+                            <option value="available">Available</option>
+                            <option value="blocke">Blocked</option>
+                          </Form.Select>
+                        </Form.Group>
                       </Form>
                       
                     </Col>
@@ -150,6 +143,7 @@ export default function Users() {
 
                             <th >Name</th>
                             <th >Rol</th>
+                            <th >State</th>
                             <th >Options</th>
                           </tr>
                       </thead>
@@ -158,7 +152,8 @@ export default function Users() {
                           <tr key = {user.id} variant="danger">
 
                             <td>{user.mail}</td>
-                            <td>Admin</td>
+                            <td>{getRole(user.role)}</td>
+                            <td>{isBlocked(user.blocked)}</td>
                             <td>    
                                 <Link 
                                   to= { `/users/${user.id}`}

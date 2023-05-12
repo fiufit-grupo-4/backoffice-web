@@ -5,9 +5,8 @@ import { Form, Button ,InputGroup,Spinner} from 'react-bootstrap';
 import logo from "../../assets/img/admin.png";
 import {IoEyeOutline, IoEyeOffOutline,IoMailOutline } from "react-icons/io5";
 import Sidebar from '../utils/SideBar';
-import { API_GATEWAY } from '../../utils/constants';
+import { API_GATEWAY,TOKEN,ADMIN } from '../../utils/constants';
 
-const ADMIN = 1
 
 function Register() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -27,6 +26,7 @@ function Register() {
     const email = event.target.email.value;
     const password = event.target.password.value;
     const confirmPassword = event.target.confirmPassword.value;
+    const accessToken = localStorage.getItem(TOKEN)
     if (password !== confirmPassword) {
       setErrorMessage("Passwords Missmatch");
     } else {
@@ -37,7 +37,8 @@ function Register() {
       fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + accessToken,
         },
         body: JSON.stringify({
           "mail": email,
@@ -48,8 +49,13 @@ function Register() {
       .then(response => {
         setLoading(false)
         if (!response.ok) {
+          console.log(response.status)
           setError(true)
-          setErrorMessage("Failed to connect with server")    
+          if(response.status == 401){
+            setErrorMessage("Not Authorized")
+          } else {
+            setErrorMessage("Failed to connect with server")
+          }
         } else {
           navigate('/home');
         }
@@ -146,9 +152,7 @@ function Register() {
                   Sign Up
                 </Button>
                 
-                {error && (
-                  <p style = {{fontSize:15,color : "crimson",padding:5}}> {errorMessage} </p>
-                )}
+                
                 </>
             }    
         </Form>

@@ -22,8 +22,8 @@ export default function UserProfile() {
 
     function handleConfirmBlockUser() {
         // hacer petición para bloquear usuario
-        /*
-        const url = API_GATEWAY + 'users/' + userToBlock.id+  '/block/'
+        console.log(userToBlock.id)
+        const url = API_GATEWAY + 'users/' + userToBlock.id.toString()+  '/block'
         const accessToken = localStorage.getItem(TOKEN)
         console.log(accessToken)
         setLoading(true)
@@ -44,17 +44,16 @@ export default function UserProfile() {
             }
           } else {
             response.json().then(data => {
-              console.log(data)   
-              
+              console.log(data)      
             })  
           }
         })
         .catch(error => {
           setError(true)
           setErrorMessage(error)
-        })     */
+        })     
 
-        console.log(`Usuario ${userToBlock.name} bloqueado`);
+        //console.log(`Usuario ${userToBlock.name} bloqueado`);
         setShowModal(false);
     }
 
