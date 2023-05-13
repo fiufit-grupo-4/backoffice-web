@@ -87,7 +87,7 @@ export default function Trainings() {
     function getFilteredTrainings() {
       return trainings.filter((training) => {
         const nameMatches = training.title.toLowerCase().includes(nameFilter.toLowerCase());
-        const difficultyMatches = training.difficulty.toLowerCase().includes(difficultyFilter.toLowerCase());     
+        const difficultyMatches = training.difficulty.toString().includes(difficultyFilter.toLowerCase());     
         const trainerNameMatches = handleUndefined(training.trainer_name).toLowerCase().includes(userNameFilter.toLowerCase())  ;
         const typeMatches = training.type.toLowerCase().includes(typeFilter.toLowerCase());   
         return nameMatches && difficultyMatches  && typeMatches && trainerNameMatches;
@@ -165,9 +165,11 @@ export default function Trainings() {
                       <Form.Label>Difficulty:</Form.Label>
                       <Form.Select defaultValue="" onChange={handleDifficultyFilterChange}>
                         <option value="">All</option>
-                        <option value="Easy">Easy</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Hard">Hard</option> 
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option> 
+                        <option value="4">4</option> 
+                        <option value="5">5</option> 
                       </Form.Select>
                     </Form.Group>
                     
