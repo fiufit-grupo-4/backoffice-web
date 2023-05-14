@@ -50,9 +50,7 @@ export default function Users() {
       }
     }
     function isBlocked(boolean){
-
       return boolean ? "Blocked" : "Available"
-      
     }
 
     

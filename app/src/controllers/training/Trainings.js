@@ -79,7 +79,6 @@ export default function Trainings() {
 
     function handleUndefined(value){
       return value ? value : "undefined"
-
     }
 
 
@@ -93,6 +92,8 @@ export default function Trainings() {
         return nameMatches && difficultyMatches  && typeMatches && trainerNameMatches;
       });
     }
+
+    
 
     
     useEffect(() => {

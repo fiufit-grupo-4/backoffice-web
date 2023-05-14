@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../utils/SideBar';
-import { Card, ListGroup, ListGroupItem, Badge, Button,Modal, Container } from "react-bootstrap";
+import { Card, ListGroup, ListGroupItem, Button,Modal, Container } from "react-bootstrap";
 import { Link, useParams,useLocation } from "react-router-dom";
-import { API_GATEWAY, TOKEN } from '../../utils/constants';
+import { API_GATEWAY, TOKEN,ADMIN,ATHLETE,TRAINER } from '../../utils/constants';
 
 export default function UserProfile() {
     const location = useLocation()
     const user = location.state.user
-    const [isBlocked,setBlocked] = useState(false) 
+    const [isBlocked,setBlocked] = useState(user.blocked) 
     const [showModal, setShowModal] = useState(false);
     const [userToBlock, setUserToBlock] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -23,7 +23,8 @@ export default function UserProfile() {
     function handleConfirmBlockUser() {
         // hacer petición para bloquear usuario
         console.log(userToBlock.id)
-        const url = API_GATEWAY + 'users/' + userToBlock.id.toString()+  '/block'
+        let endpoint = API_GATEWAY + 'users/' + userToBlock.id.toString()
+        const url = isBlocked ? endpoint + '/unblock ' : endpoint + '/block' 
         const accessToken = localStorage.getItem(TOKEN)
         console.log(accessToken)
         setLoading(true)
@@ -44,7 +45,8 @@ export default function UserProfile() {
             }
           } else {
             response.json().then(data => {
-              console.log(data)      
+              console.log(data) 
+              setBlocked(!isBlocked)     
             })  
           }
         })
@@ -62,20 +64,20 @@ export default function UserProfile() {
         setShowModal(false);
     }  
 
+    function getRole(role){
+      if (role == ADMIN){
+        return "Admin"
+      } else if (role == TRAINER){
+        return "Trainer"
+      } else if (role == ATHLETE){
+        return "Athlete"
+      } else {
+        return "Undefined"
+      }
+    }
 
-    /*
-    useEffect(() => {
-      const fetchUser = async () => {
-        const response = await fetch(`/api/users/${userId}`);
-        const userData = await response.json();
-        setUser(userData);
-      };
-      fetchUser();
-    }, [userId]);
-  
-    if (!user) {
-      return <div>Loading...</div>;
-    }*/
+
+
   
     return (
       <div>
@@ -83,25 +85,42 @@ export default function UserProfile() {
         
         <Card style = {{width:"80%",margin:"auto"}}>
           <Card.Body>
-            <Card.Title>{(user.name != undefined && user.lastName != undefined)  ? user.name + user.lastName : "Undefined" }</Card.Title>
+            <Card.Title>{user.mail}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-            <b>ID:</b> {user.id}
+              {isBlocked 
+                ?<p style = {{color:"crimson"}}>Blocked</p> 
+                :<p style = {{color:"#20c997"}}>Available</p> 
+              }
             </Card.Subtitle>
             <ListGroup className="mb-3">
+              
+
+              <ListGroupItem>
+                <b>id:</b> {user.id }
+              </ListGroupItem>
+              <ListGroupItem>
+                <b>role:</b> {getRole(user.role) }
+              </ListGroupItem>
+
               <ListGroupItem>
                 <b>email:</b> {user.mail }
               </ListGroupItem>
-              <ListGroupItem>
-                <b>Age:</b> {user.age ? user.age : " undefined"}
-              </ListGroupItem>
+
+              { user.age && (
+                <ListGroupItem>
+                <b>Age:</b> user.age 
+                </ListGroupItem>
+               )
+              }
+              
               
             </ListGroup>
             <div>
               <Container style = {{margin:"auto",textAlign:"center"}} >
-                
                 <Button variant="danger" onClick={() => handleBlockUser(user)}>
-                      Block User
+                    {isBlocked ? "Unblock User" : "Block User" }
                 </Button>
+                
               </Container>
             </div>
           </Card.Body>
@@ -109,13 +128,13 @@ export default function UserProfile() {
 
         <Modal show={showModal} onHide={handleCancelBlockUser} style = {{marginTop:175}}>
             <Modal.Header closeButton>
-            <Modal.Title>User Block Confirmation</Modal.Title>
+            <Modal.Title>User {isBlocked ? "Unblock " : "Block" } Confirmation</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            Are you sure you want to block the user {userToBlock && userToBlock.name}?
+            Are you sure you want to {isBlocked ? "unblock" : "block" } the user {userToBlock && userToBlock.name}?
             {error && (
                   <p style = {{fontSize:15,color : "crimson",padding:5}}> {errorMessage} </p>
-                )}
+            )}
             </Modal.Body>
 
             
@@ -124,7 +143,7 @@ export default function UserProfile() {
                 Cancel
             </Button>
             <Button variant="danger" onClick={handleConfirmBlockUser}>
-                Block
+                {isBlocked ? "Unblock " : "Block" }
             </Button>
             </Modal.Footer>
         </Modal>
