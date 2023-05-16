@@ -139,7 +139,7 @@ export default function Users() {
                       <thead>
                           <tr style={{backgroundColor:"#375a7f"}}>
 
-                            <th >Name</th>
+                            <th >Email</th>
                             <th >Rol</th>
                             <th >State</th>
                             <th >Options</th>
@@ -151,11 +151,18 @@ export default function Users() {
 
                             <td>{user.mail}</td>
                             <td>{getRole(user.role)}</td>
-                            <td>{isBlocked(user.blocked)}</td>
+                            <td>
+                              {user.blocked
+                                ?<p style = {{color:"crimson"}}>Blocked</p> 
+                                :<p style = {{color:"#20c997"}}>Available</p>
+                              }
+                            </td>
                             <td>    
                                 <Link 
                                   to= { `/users/${user.id}`}
-                                  state={{user: user}}>
+                                  state={{user: user}}
+                                  style={{color:"#3498db"}}
+                                  >
                                   See Profile
                                 </Link>
                             </td>

@@ -37,7 +37,7 @@ function Login() {
       body: JSON.stringify({
         "mail": email,
         "password": password,
-        "role":3,
+        "role":ADMIN,
       })
     })
     .then(response => {

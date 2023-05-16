@@ -8,58 +8,12 @@ export default function Trainings() {
     const [trainings, setTrainings] = useState([]);
     const [nameFilter, setNameFilter] = useState('');
     const [userNameFilter, setUserNameFilter] = useState('');
+    const [stateFilter, setStateFilter] = useState('');
     const [difficultyFilter, setDifficultyFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
-    /*
-    const trainings = [
-        {   id:"1",
-            trainer_name:"Juan",
-            trainer_id:"1",
-            difficulty:"Easy",
-            type:"Dolor",
-            description:"Lorem ipsum dolor sit amet",
-            title: "Fuerza de brazos"
-        },
-        {
-            id:"2",
-            trainer_name:"Pepito Boxeador",
-            trainer_id:"6",
-            difficulty:"Medium",
-            type:"Cardio",
-            description:"Lorem ipsum cardio sit amet",
-            title: "Sentadillas"
-        },
-        {
-            id:"3",
-            trainer_name:"Juan",
-            trainer_id:"1",
-            difficulty:"Easy",
-            type:"Masa",
-            description:"Lorem ipsum masa sit amet",
-            title: "Abdominales"
-        },{
-            id:"4",
-            trainer_name:"Pepito boxeador",
-            trainer_id:"1",
-            difficulty:"Hard",
-            type:"Dolor",
-            description:"Lorem ipsum dolor sit amet",
-            title: "Fuerza de piernas"
-        },{
-          id:"5",
-          trainer_name:"Roberto conduccion",
-          trainer_id:"13",
-          difficulty:"Hard",
-          type:"Fortalecimiento",
-          description:"Lorem ipsum malianteo sit amet",
-          title: "Espinales"
-      }
-
-    ]*/
 
     function handleNameFilterChange(event) {
       setNameFilter(event.target.value);
@@ -71,25 +25,29 @@ export default function Trainings() {
 
     function handleUserNameFilterChange(event) {
         setUserNameFilter(event.target.value);
-      }
+    }
+
+    function handleStateFilterChange(event) {
+      setStateFilter(event.target.value);
+    }
 
     function handleDifficultyFilterChange(event) {
         setDifficultyFilter(event.target.value);
     }
 
-    function handleUndefined(value){
-      return value ? value : "undefined"
+    function isBlocked(boolean){
+      return boolean ? "Blocked" : "Available"
     }
 
 
-    // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
     function getFilteredTrainings() {
       return trainings.filter((training) => {
         const nameMatches = training.title.toLowerCase().includes(nameFilter.toLowerCase());
         const difficultyMatches = training.difficulty.toString().includes(difficultyFilter.toLowerCase());     
-        const trainerNameMatches = handleUndefined(training.trainer_name).toLowerCase().includes(userNameFilter.toLowerCase())  ;
+        //const trainerNameMatches = handleUndefined(training.trainer_name).toLowerCase().includes(userNameFilter.toLowerCase())  ;
         const typeMatches = training.type.toLowerCase().includes(typeFilter.toLowerCase());   
-        return nameMatches && difficultyMatches  && typeMatches && trainerNameMatches;
+        const stateMatches = isBlocked(training.blocked).toLowerCase().includes(stateFilter.toLowerCase());
+        return nameMatches && difficultyMatches  && typeMatches && stateMatches//&& trainerNameMatches;
       });
     }
 
@@ -154,10 +112,7 @@ export default function Trainings() {
                       <Form.Label>Title:</Form.Label>
                       <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
                     </Form.Group>
-                    <Form.Group>
-                      <Form.Label>Trainer:</Form.Label>
-                      <Form.Control type="text" value={userNameFilter} onChange={handleUserNameFilterChange} />
-                    </Form.Group>
+                    
                     <Form.Group>
                       <Form.Label>Type:</Form.Label>
                       <Form.Control type="text" value={typeFilter} onChange={handleTypeFilterChange} />
@@ -173,6 +128,15 @@ export default function Trainings() {
                         <option value="5">5</option> 
                       </Form.Select>
                     </Form.Group>
+
+                    <Form.Group controlId="state">
+                      <Form.Label>State:</Form.Label>
+                      <Form.Select defaultValue="" onChange={handleStateFilterChange}>
+                        <option value="">All</option>
+                        <option value="available">Available</option>
+                        <option value="blocke">Blocked</option>
+                      </Form.Select>
+                    </Form.Group>
                     
                   </Form>
                   
@@ -186,7 +150,7 @@ export default function Trainings() {
                         <th >Title</th>
                         <th >Type</th>
                         <th >Difficulty</th>
-                        <th >Trainer</th>
+                        <th >State</th>
                         <th >Options</th>
                       </tr>
                   </thead>
@@ -196,11 +160,16 @@ export default function Trainings() {
                         <td>{training.title}</td>
                         <td>{training.type}</td>
                         <td>{training.difficulty}</td>
-                        <td>{training.trainer_name ? training.trainer_name : "Undefined" }</td>
+                        <td>{training.blocked 
+                          ?<p style = {{color:"crimson"}}>Blocked</p> 
+                          :<p style = {{color:"#20c997"}}>Available</p> 
+                        }</td>
                         <td>    
                             <Link 
                               to= { `/trainings/${training.id}`}
-                              state={{training: training}}>
+                              state={{training: training}}
+                              style={{color:"#fd7e14"}}
+                              >
                               See More
                             </Link>
                         </td>

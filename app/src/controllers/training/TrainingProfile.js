@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../utils/SideBar';
 import { Card, ListGroup, ListGroupItem, Badge, Button,Modal, Container } from "react-bootstrap";
 import { Link, useParams,useLocation } from "react-router-dom";
-
+import { API_GATEWAY,TOKEN } from '../../utils/constants';
 
 export default function TrainingProfile() {
     const location = useLocation()
@@ -10,9 +10,10 @@ export default function TrainingProfile() {
 
     const [showModal, setShowModal] = useState(false);
     const [trainingToBlock, setTrainingToBlock] = useState(null);
-
-    //const { userId } = useParams();
-    //const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isBlocked,setBlocked] = useState(training.blocked) 
 
     function handleBlockTraining(training) {
       setTrainingToBlock(training);
@@ -21,7 +22,38 @@ export default function TrainingProfile() {
 
     function handleConfirmBlockTraining() {
         // hacer petición para bloquear usuario
-        console.log(`Entrenamiento ${trainingToBlock.title} bloqueado`);
+        console.log(trainingToBlock.id)
+        let endpoint = API_GATEWAY + 'trainers/me/trainings/' + trainingToBlock.id.toString()
+        const url = isBlocked ? endpoint + '/unblock ' : endpoint + '/block' 
+        const accessToken = localStorage.getItem(TOKEN)
+        console.log(accessToken)
+        setLoading(true)
+        fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken,    
+          }
+        }).then(response => {
+          setLoading(false)  
+          if (!response.ok) {
+            setError(true)
+            if(response.status == 401){
+              setErrorMessage("Unhautorized, not valid access token")
+            } else {
+              setErrorMessage("Failed to connect with server")
+            }
+          } else {
+            response.json().then(data => {
+              console.log(data) 
+              setBlocked(!isBlocked)     
+            })  
+          }
+        })
+        .catch(error => {
+          setError(true)
+          setErrorMessage(error)
+        })     
         setShowModal(false);
     }
 
@@ -30,20 +62,6 @@ export default function TrainingProfile() {
         setShowModal(false);
     }  
 
-
-    /*
-    useEffect(() => {
-      const fetchUser = async () => {
-        const response = await fetch(`/api/users/${userId}`);
-        const userData = await response.json();
-        setUser(userData);
-      };
-      fetchUser();
-    }, [userId]);
-  
-    if (!user) {
-      return <div>Loading...</div>;
-    }*/
   
     return (
       <div>
@@ -53,7 +71,11 @@ export default function TrainingProfile() {
           <Card.Body>
             <Card.Title>{training.title}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              {training.description}
+              {isBlocked 
+                ?<p style = {{color:"crimson"}}>Blocked</p> 
+                :<p style = {{color:"#20c997"}}>Available</p> 
+              }
+              {training.description}      
             </Card.Subtitle>
             <ListGroup className="mb-3">
               <ListGroupItem>
@@ -62,9 +84,7 @@ export default function TrainingProfile() {
               <ListGroupItem>
                 <b>Difficulty:</b> {training.difficulty}
               </ListGroupItem>
-              <ListGroupItem>
-                <b>Trainer:</b> {training.trainer_name ? training.trainer_name : " undefined"}
-              </ListGroupItem>
+
               <ListGroupItem>
                 <b>Trainer Id:</b> {training.id_trainer}
               </ListGroupItem>
@@ -73,7 +93,7 @@ export default function TrainingProfile() {
             <div>
               <Container style = {{margin:"auto",textAlign:"center"}} >
                 <Button variant="danger" onClick={() => handleBlockTraining(training)}>
-                      Block Training
+                    {isBlocked ? "Unblock Training" : "Block Training" }
                 </Button>
               </Container>
             </div>
@@ -82,17 +102,17 @@ export default function TrainingProfile() {
 
         <Modal show={showModal} onHide={handleCancelBlockTraining} style = {{marginTop:175}}>
             <Modal.Header closeButton>
-            <Modal.Title>Training Block Confirmation</Modal.Title>
+            <Modal.Title>Training {isBlocked ? "Unblock " : "Block" } Confirmation</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            Are you sure you want to block the training {trainingToBlock && trainingToBlock.title}?
+            Are you sure you want to {isBlocked ? "unblock" : "block" } the training {trainingToBlock && trainingToBlock.title}?
             </Modal.Body>
             <Modal.Footer>
             <Button variant="secondary" onClick={handleCancelBlockTraining}>
                 Cancel
             </Button>
             <Button variant="danger" onClick={handleConfirmBlockTraining}>
-                Block
+              {isBlocked ? "Unblock " : "Block" }
             </Button>
             </Modal.Footer>
         </Modal>

@@ -54,8 +54,6 @@ export default function UserProfile() {
           setError(true)
           setErrorMessage(error)
         })     
-
-        //console.log(`Usuario ${userToBlock.name} bloqueado`);
         setShowModal(false);
     }
 
@@ -75,9 +73,6 @@ export default function UserProfile() {
         return "Undefined"
       }
     }
-
-
-
   
     return (
       <div>
@@ -85,7 +80,7 @@ export default function UserProfile() {
         
         <Card style = {{width:"80%",margin:"auto"}}>
           <Card.Body>
-            <Card.Title>{user.mail}</Card.Title>
+            <Card.Title>{user.name}  {user.lastname}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
               {isBlocked 
                 ?<p style = {{color:"crimson"}}>Blocked</p> 
@@ -98,20 +93,22 @@ export default function UserProfile() {
               <ListGroupItem>
                 <b>id:</b> {user.id }
               </ListGroupItem>
-              <ListGroupItem>
-                <b>role:</b> {getRole(user.role) }
-              </ListGroupItem>
 
               <ListGroupItem>
                 <b>email:</b> {user.mail }
               </ListGroupItem>
 
-              { user.age && (
-                <ListGroupItem>
-                <b>Age:</b> user.age 
-                </ListGroupItem>
-               )
-              }
+              <ListGroupItem>
+                <b>phone:</b> {user.phone_number }
+              </ListGroupItem>
+
+              <ListGroupItem>
+                <b>role:</b> {getRole(user.role) }
+              </ListGroupItem>
+
+              <ListGroupItem>
+              <b>Age:</b> {user.age }
+              </ListGroupItem>
               
               
             </ListGroup>
