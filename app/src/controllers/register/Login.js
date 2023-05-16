@@ -20,7 +20,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
-    const url = API_GATEWAY + 'login/'
+    const url = API_GATEWAY + 'login'
     setLoading(true)
 
     event.preventDefault();
@@ -43,7 +43,6 @@ function Login() {
     .then(response => {
       setLoading(false)
       
-      
       if (!response.ok) {
         setError(true)
         if(response.status == 401){
@@ -56,10 +55,12 @@ function Login() {
           const accesToken = json.access_token
           console.log(json.access_token)
           localStorage.setItem(TOKEN,accesToken);
-          //localStorage.setItem("accesToken","true");
-          navigate('/home');
-        })
         
+          navigate('/home');
+        }).catch(error => {
+          setError(true)
+          setErrorMessage(error)
+        }) 
       }
     })
     .catch(error => {
