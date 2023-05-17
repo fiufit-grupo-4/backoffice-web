@@ -23,11 +23,12 @@ export default function TrainingProfile() {
     function handleConfirmBlockTraining() {
         // hacer petición para bloquear usuario
         console.log(trainingToBlock.id)
-        let endpoint = API_GATEWAY + 'trainers/me/trainings/' + trainingToBlock.id.toString()
+        let endpoint = API_GATEWAY + 'trainings/' + trainingToBlock.id.toString()
         const url = isBlocked ? endpoint + '/unblock ' : endpoint + '/block' 
         const accessToken = localStorage.getItem(TOKEN)
         console.log(accessToken)
         setLoading(true)
+        setError(false)
         fetch(url, {
           method: 'PATCH',
           headers: {
@@ -97,6 +98,12 @@ export default function TrainingProfile() {
                 </Button>
               </Container>
             </div>
+
+            {error && (
+            <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 10 }}>
+              <p style = {{fontSize:18,color : "crimson",padding:5}}> {errorMessage} </p>
+            </div>  
+          )}
           </Card.Body>
         </Card>
 
