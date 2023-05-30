@@ -55,7 +55,7 @@ export default function Users() {
 
     
     useEffect(() => {
-        const url = API_GATEWAY + 'users/'
+        const url = API_GATEWAY + 'users'
         const accessToken = localStorage.getItem(TOKEN)
         async function getUsers() {
           setLoading(true)

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../utils/SideBar';
 import { Card, ListGroup, ListGroupItem, Button,Modal, Container } from "react-bootstrap";
 import { Link, useParams,useLocation } from "react-router-dom";
-import { API_GATEWAY, TOKEN,ADMIN,ATHLETE,TRAINER } from '../../utils/constants';
+import { API_GATEWAY, TOKEN,ADMIN,ATHLETE,TRAINER, DEFAULT_IMAGE ,DEFAULT_PROFILE_IMAGE} from '../../utils/constants';
+
 
 export default function UserProfile() {
     const location = useLocation()
@@ -80,15 +81,39 @@ export default function UserProfile() {
         
         <Card style = {{width:"80%",margin:"auto"}}>
           <Card.Body>
-            <Card.Title>{user.name}  {user.lastname}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              {isBlocked 
-                ?<p style = {{color:"crimson"}}>Blocked</p> 
-                :<p style = {{color:"#20c997"}}>Available</p> 
-              }
-            </Card.Subtitle>
-            <ListGroup className="mb-3">
+            <Card.Body className="d-flex justify-content-between">
               
+              <div>
+                  <img src={ user.image ? user.image : DEFAULT_PROFILE_IMAGE } alt="User" className="rounded-circle" style={{ width: '50px', height: '50px' }} />
+                </div>
+              <div>
+                
+                <div className="d-flex flex-column" style ={{marginRight:320}}>
+                  <Card.Title>{user.name}  {user.lastname}</Card.Title>
+                  <Card.Subtitle className=" text-muted">
+                    {isBlocked 
+                      ?<p style = {{color:"crimson"}}>Blocked</p> 
+                      :<p style = {{color:"#20c997"}}>Available</p> 
+                    }
+                  </Card.Subtitle>
+                </div>
+              </div>
+              
+
+              <div>
+              <Container style = {{margin:"auto",textAlign:"center"}} >
+                <Button variant="danger" onClick={() => handleBlockUser(user)}>
+                    {isBlocked ? "Unblock User" : "Block User" }
+                </Button>
+                
+              </Container>
+            </div>
+            </Card.Body>
+
+            <ListGroup className="mb-3">
+              <ListGroupItem style = {{backgroundColor:"#375a7f"}}>
+                <b>Information</b> 
+              </ListGroupItem>
 
               <ListGroupItem>
                 <b>id:</b> {user.id }
@@ -112,14 +137,6 @@ export default function UserProfile() {
               
               
             </ListGroup>
-            <div>
-              <Container style = {{margin:"auto",textAlign:"center"}} >
-                <Button variant="danger" onClick={() => handleBlockUser(user)}>
-                    {isBlocked ? "Unblock User" : "Block User" }
-                </Button>
-                
-              </Container>
-            </div>
           </Card.Body>
         </Card>
 
@@ -144,7 +161,7 @@ export default function UserProfile() {
             </Button>
             </Modal.Footer>
         </Modal>
-        <Container style = {{textAlign:"center",width:"80%",marginTop:10}}>
+        <Container style = {{textAlign:"center",width:"80%",marginTop:10,marginBottom:20}}>
           <Link to="/users">Back to Users</Link>
         </Container>
 

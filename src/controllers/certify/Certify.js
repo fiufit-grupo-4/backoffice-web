@@ -13,73 +13,21 @@ export default function Certify() {
    const [error, setError] = useState(false);
    const [errorMessage, setErrorMessage] = useState("");
 
-   const users = [
-       {   id:"1",
-           name:"Juan",
-           email:"juan@gmail.com",
-           rol:"Trainer",
-           phone:8003333,
-           address:"Calle 1234",
-           company: "CGT",
-           certify:null,
-       },
-       {
-           id:"2",
-           name:"Domingo",
-           email:"domingo17o@gmail.com",
-           rol:"Athlete",
-           phone:8003333,
-           address:"Calle 1234",
-           company: "CGT",
-           certify:null,
-       },
-       {
-           id:"3",
-           name:"Perón",
-           email:"peron@gmail.com",
-           rol:"Trainer",
-           phone:8003333,
-           address:"Calle 1234",
-           company: "CGT",
-           certify:true,
-       },{
-         id:"4",
-         name:"Jesus",
-         email:"jesus@gmail.com",
-         rol:"Admin",
-         phone:8003333,
-         address:"Calle 1234",
-         company: "Jesus SA",
-         certify:null,
-       },{
-        id:"5",
-        name:"Evita",
-        email:"evitacapitana@gmail.com",
-        rol:"Admin",
-        phone:8003333,
-        address:"Calle 1234",
-        company: "Jesus SA",
-        certify:false,
-      }
-
-   ]
-
    // Esta función se llamará cada vez que se cambie el valor del filtro de nombre
    function handleNameFilterChange(event) {
      setNameFilter(event.target.value);
    }
 
-   
    // Esta función se llamará cada vez que se cambie el valor del filtro de rol
    function handleStateFilterChange(event) {
     setStateFilter(event.target.value);
    }
 
    // Esta función devuelve los datos de los usuarios filtrados según los valores de los filtros
-   function getFilteredUsers() {
-     return users.filter((user) => {
-       const nameMatches = user.name.toLowerCase().includes(nameFilter.toLowerCase());
-       const stateMatches  = getState(user.certify).toLowerCase().includes(stateFilter.toLowerCase());
+   function getFilteredCertificates() {
+     return certificates.filter((certificate) => {
+       const nameMatches = certificate.mail.toLowerCase().includes(nameFilter.toLowerCase());
+       const stateMatches  = getState(certificate.verification.verified).toLowerCase().includes(stateFilter.toLowerCase());
        return nameMatches && stateMatches;
      });
    }
@@ -149,7 +97,7 @@ export default function Certify() {
                     <h3>Filters:</h3>
                     <Form>
                       <Form.Group>
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label>Email</Form.Label>
                         <Form.Control type="text" value={nameFilter} onChange={handleNameFilterChange} />
                       </Form.Group>
           
@@ -172,29 +120,29 @@ export default function Certify() {
                     <Table striped bordered  hover   rowkey="Id">
                     <thead>
                         <tr style={{backgroundColor:"#00bc8c"}}>
-                          <th >Id</th>
-                          <th >Name</th>
+                          
+                          <th >Email</th>
                           <th >State</th>
 
                           <th >Options</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {getFilteredUsers().map(user => (
-                        <tr key = {user.id} variant="danger">
-                          <td>{user.id}</td>
-                          <td>{user.name}</td>
-                          <td>{user.certify
+                    {getFilteredCertificates().map(certificate => (
+                        <tr key = {certificate.id} variant="danger">
+                          
+                          <td>{certificate.mail}</td>
+                          <td>{certificate.verification.verified
                             ? <p style = {{ color:"#3498db"}}>Approved</p> 
-                            : user.certify == false
+                            : certificate.verification.verified == false
                             ? <p style = {{color:"crimson"}}>Rejected</p>
                             : <p>Pending</p> 
                           }</td>
                 
                           <td>    
                               <Link 
-                                to= { `/users/${user.id}`}
-                                state={{user: user}}
+                                to= { `/certify/${certificate.id}`}
+                                state={{certificate:certificate}}
                                 style= {{color:"#20c997"}}>
                                   
                                 See More

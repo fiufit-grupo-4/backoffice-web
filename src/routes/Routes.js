@@ -9,6 +9,7 @@ import UserProfile from '../controllers/user/UserProfile';
 import Trainings from '../controllers/training/Trainings';
 import TrainingProfile from '../controllers/training/TrainingProfile';
 import Certify from '../controllers/certify/Certify';
+import CertifyProfile from '../controllers/certify/CertifyProfile';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -26,6 +27,7 @@ function Router() {
           <Route exact path="/trainings" element={<PrivateRoute Component={<Trainings/>}/>} />
           <Route exact path="/trainings/:id" element={<PrivateRoute Component={<TrainingProfile/>}/>} />
           <Route exact path="/certify" element={<PrivateRoute Component={< Certify/>}/>} />
+          <Route exact path="/certify/:id" element={<PrivateRoute Component={< CertifyProfile/>}/>} />
         </Routes>
       </BrowserRouter>
     );
