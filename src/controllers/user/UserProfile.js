@@ -3,7 +3,7 @@ import Sidebar from '../utils/SideBar';
 import { Card, ListGroup, ListGroupItem, Button,Modal, Container } from "react-bootstrap";
 import { Link, useParams,useLocation } from "react-router-dom";
 import { API_GATEWAY, TOKEN,ADMIN,ATHLETE,TRAINER, DEFAULT_IMAGE ,DEFAULT_PROFILE_IMAGE} from '../../utils/constants';
-
+import {  IoCheckmarkDone} from "react-icons/io5";
 
 export default function UserProfile() {
     const location = useLocation()
@@ -86,7 +86,11 @@ export default function UserProfile() {
                   <Container className="d-flex"> 
                     <img src={ user.image ? user.image : DEFAULT_PROFILE_IMAGE } alt="User" className="rounded-circle" style={{ width: '50px', height: '50px' }} />
                     <div className="d-flex flex-column" style= {{marginLeft:10}}>
-                      <Card.Title>{user.name}  {user.lastname}</Card.Title>
+                      <Card.Title>{user.name}  {user.lastname} 
+                        { user.verification?.verified && (
+                            <IoCheckmarkDone size={22} color={"skyblue"}  style= {{marginLeft:5}}/>        
+                        )}
+                      </Card.Title>
                       <Card.Subtitle className=" text-muted">
                         {isBlocked 
                           ?<p style = {{color:"crimson"}}>Blocked</p> 

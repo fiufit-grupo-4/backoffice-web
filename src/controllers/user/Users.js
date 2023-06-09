@@ -3,7 +3,7 @@ import { Card, Form,Table, Container,Row, Col, Spinner } from 'react-bootstrap';
 import Sidebar from '../utils/SideBar';
 import { Link } from 'react-router-dom';
 import { API_GATEWAY, TOKEN, ADMIN, ATHLETE, TRAINER } from '../../utils/constants';
-
+import {  IoCheckmarkDone} from "react-icons/io5";
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [nameFilter, setNameFilter] = useState('');
@@ -149,7 +149,12 @@ export default function Users() {
                       {getFilteredUsers().map(user => (
                           <tr key = {user.id} variant="danger">
 
-                            <td>{user.mail}</td>
+                            <td>
+                              {user.mail} 
+                              { user.verification?.verified && (
+                                <IoCheckmarkDone size={18} color={"skyblue"}  style= {{marginLeft:5}}/>        
+                              )}
+                            </td>
                             <td>{getRole(user.role)}</td>
                             <td>
                               {user.blocked
