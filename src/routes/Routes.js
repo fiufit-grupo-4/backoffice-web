@@ -10,6 +10,9 @@ import Trainings from '../controllers/training/Trainings';
 import TrainingProfile from '../controllers/training/TrainingProfile';
 import Certify from '../controllers/certify/Certify';
 import CertifyProfile from '../controllers/certify/CertifyProfile';
+import UserMetrics from '../controllers/metrics/UserMetrics';
+import TrainingMetrics from '../controllers/metrics/TrainingMetrics';
+import ContentMetrics from '../controllers/metrics/ContentMetrics';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -28,6 +31,9 @@ function Router() {
           <Route exact path="/trainings/:id" element={<PrivateRoute Component={<TrainingProfile/>}/>} />
           <Route exact path="/certify" element={<PrivateRoute Component={< Certify/>}/>} />
           <Route exact path="/certify/:id" element={<PrivateRoute Component={< CertifyProfile/>}/>} />
+          <Route exact path="/stats/user" element={<PrivateRoute Component={< UserMetrics/>}/>} />
+          <Route exact path="/stats/content" element={<PrivateRoute Component={< ContentMetrics/>}/>} />
+          <Route exact path="/stats/training" element={<PrivateRoute Component={< TrainingMetrics/>}/>} />
         </Routes>
       </BrowserRouter>
     );

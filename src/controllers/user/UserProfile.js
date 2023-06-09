@@ -82,35 +82,33 @@ export default function UserProfile() {
         <Card style = {{width:"80%",margin:"auto"}}>
           <Card.Body>
             <Card.Body className="d-flex justify-content-between">
-              
-              <div>
-                  <img src={ user.image ? user.image : DEFAULT_PROFILE_IMAGE } alt="User" className="rounded-circle" style={{ width: '50px', height: '50px' }} />
+                <div>
+                  <Container className="d-flex"> 
+                    <img src={ user.image ? user.image : DEFAULT_PROFILE_IMAGE } alt="User" className="rounded-circle" style={{ width: '50px', height: '50px' }} />
+                    <div className="d-flex flex-column" style= {{marginLeft:10}}>
+                      <Card.Title>{user.name}  {user.lastname}</Card.Title>
+                      <Card.Subtitle className=" text-muted">
+                        {isBlocked 
+                          ?<p style = {{color:"crimson"}}>Blocked</p> 
+                          :<p style = {{color:"#20c997"}}>Available</p> 
+                        }
+                      </Card.Subtitle>
+                  
+                    </div>
+                  </Container>
+                  
                 </div>
+ 
               <div>
-                
-                <div className="d-flex flex-column" style ={{marginRight:320}}>
-                  <Card.Title>{user.name}  {user.lastname}</Card.Title>
-                  <Card.Subtitle className=" text-muted">
-                    {isBlocked 
-                      ?<p style = {{color:"crimson"}}>Blocked</p> 
-                      :<p style = {{color:"#20c997"}}>Available</p> 
-                    }
-                  </Card.Subtitle>
-                </div>
+                <Container style = {{margin:"auto",textAlign:"center"}} >
+                  <Button variant="danger" onClick={() => handleBlockUser(user)}>
+                      {isBlocked ? "Unblock User" : "Block User" }
+                  </Button> 
+                </Container>
               </div>
-              
-
-              <div>
-              <Container style = {{margin:"auto",textAlign:"center"}} >
-                <Button variant="danger" onClick={() => handleBlockUser(user)}>
-                    {isBlocked ? "Unblock User" : "Block User" }
-                </Button>
-                
-              </Container>
-            </div>
             </Card.Body>
 
-            <ListGroup className="mb-3">
+            <ListGroup className="mb-3" style={{padding:10}}>
               <ListGroupItem style = {{backgroundColor:"#375a7f"}}>
                 <b>Information</b> 
               </ListGroupItem>
@@ -137,6 +135,7 @@ export default function UserProfile() {
               
               
             </ListGroup>
+
           </Card.Body>
         </Card>
 
