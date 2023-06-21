@@ -114,7 +114,7 @@ export default function UserMetrics() {
                             <YAxis tick={{ fill: 'white' }} />
                             <Tooltip />
                             <Legend />
-                            <Line dataKey="amount" fill="#6f42c1" />
+                            <Line dataKey="amount" fill="#00bc8c" />
                           
                           </LineChart>
                         </ResponsiveContainer>
