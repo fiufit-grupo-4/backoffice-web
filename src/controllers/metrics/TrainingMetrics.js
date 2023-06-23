@@ -33,8 +33,19 @@ export default function UserMetrics() {
       setNewTrainings(transformedData)
     }
 
-    function generateTrainingType(data) {  
-      const transformedData = Object.entries(data).map(([type, amount]) => ({
+    function generateTrainingType(data) { 
+      
+      const result = {};
+      for (const key in data) {
+        const type = key.toLowerCase();
+
+        if (result.hasOwnProperty(type)) {
+          result[type] += data[key];
+        } else {
+          result[type] = data[key];
+        }
+      }
+      const transformedData = Object.entries(result).map(([type, amount]) => ({
         type,
         amount,
       }))
@@ -87,13 +98,19 @@ export default function UserMetrics() {
     useEffect(() => {
       const url = API_GATEWAY + 'history/'
       const accessToken = localStorage.getItem(TOKEN)
-      setLoading(true)
-      getTrainingHistory(url + 'trainings_requests_count',accessToken,generateTrainingRequest);
-      getTrainingHistory(url + 'trainings_per_type',accessToken,generateTrainingType);
-      getTrainingHistory(url + 'new_trainings_per_month',accessToken,generateNewTrainings);
-      getTrainingHistory(url + 'favorite_trainings_per_location',accessToken,generateFavoriteByLocation);
-      getTrainingHistory(url + 'favorite_trainings_by_user',accessToken,generateFavoriteByUser);
-      setLoading(false)  
+      
+      async function getTrainings(){
+        setLoading(true)
+        await  getTrainingHistory(url + 'trainings_requests_count',accessToken,generateTrainingRequest);
+        await getTrainingHistory(url + 'trainings_per_type',accessToken,generateTrainingType);
+        await getTrainingHistory(url + 'new_trainings_per_month',accessToken,generateNewTrainings);
+        await getTrainingHistory(url + 'favorite_trainings_per_location',accessToken,generateFavoriteByLocation);
+        await getTrainingHistory(url + 'favorite_trainings_by_user',accessToken,generateFavoriteByUser);
+        setLoading(false)  
+      }
+      getTrainings()
+     
+      
     }, []) 
 
     return (

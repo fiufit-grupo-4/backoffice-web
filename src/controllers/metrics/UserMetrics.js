@@ -63,11 +63,16 @@ export default function UserMetrics() {
     useEffect(() => {
       const url = API_GATEWAY + 'history/'
       const accessToken = localStorage.getItem(TOKEN)
-      setLoading(true)
-      getUsersHistory(url + 'users_auth',accessToken,generateUsersAuth);
-      getUsersHistory(url + 'blocked_users',accessToken,generateBlockedUsers);
-      getUsersHistory(url + 'users_by_location',accessToken,generateUsersByLoaction);
-      setLoading(false)  
+      async function getHistory(){
+        setLoading(true)
+        await getUsersHistory(url + 'users_auth',accessToken,generateUsersAuth);
+        await getUsersHistory(url + 'blocked_users',accessToken,generateBlockedUsers);
+        await getUsersHistory(url + 'users_by_location',accessToken,generateUsersByLoaction);
+        setLoading(false)  
+      }
+      getHistory()
+      
+      
     }, []) 
 
     return (

@@ -48,9 +48,13 @@ export default function UserMetrics() {
     }
 
     useEffect(() => {
-      setLoading(true)
-      getUsersContent();
-      setLoading(false)  
+      async function getHistory(){
+        setLoading(true)
+        await getUsersContent();
+     
+        setLoading(false)  
+      }
+      getHistory()
     }, []) 
 
     return (
