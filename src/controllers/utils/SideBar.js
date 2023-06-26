@@ -62,16 +62,19 @@ function Sidebar({title}) {
                     <Nav.Link href="/certify">Certify Trainer</Nav.Link>
 
                     <NavDropdown
-                      title="Settings"
+                      title="Metrics"
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
                     >
-                      <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                      <NavDropdown.Item href="#action4">
-                        Another action
+                      <NavDropdown.Item href="#userMetrics">
+                        <Nav.Link href="/stats/user" style = {{height:28,padding:2,alignContent:"center"}}>Users</Nav.Link>
                       </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item href="#action5">
-                        Something else here
+                      
+                      <NavDropdown.Item href="#trainingMetrics">
+                        <Nav.Link href="/stats/training" style = {{height:28,padding:2,alignContent:"center"}}>Trainings</Nav.Link>
+                      </NavDropdown.Item>
+                    
+                      <NavDropdown.Item href="#contentMetrics">
+                        <Nav.Link href="/stats/content" style = {{height:28,padding:2,alignContent:"center"}}>Content</Nav.Link>
                       </NavDropdown.Item>
                     </NavDropdown>
                     
