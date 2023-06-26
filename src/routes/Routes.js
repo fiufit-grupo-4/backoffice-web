@@ -14,20 +14,18 @@ import PublicRoute from './PublicRoute';
 
 function Router() {
     return (
-      <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<PublicRoute Component={<Index/>}/>} />
-          <Route exact path="/login" element={<PublicRoute Component={<Login/>}/>} />
-           <Route exact path='/register' element={<PrivateRoute Component={<Register/>}/>}/>
-          <Route exact path="/home" element={<PrivateRoute Component={<Home/>}/>} />
+          <Route path="/login" element={<PublicRoute Component={<Login/>}/>} />
+          <Route path='/register' element={<PrivateRoute Component={<Register/>}/>}/>
+          <Route path="/home" element={<PrivateRoute Component={<Home/>}/>} />
          
-          <Route exact path="/users" element={<PrivateRoute Component={<Users/>}/>} />
-          <Route exact path="/users/:id" element={<PrivateRoute Component={<UserProfile/>}/>} />
-          <Route exact path="/trainings" element={<PrivateRoute Component={<Trainings/>}/>} />
-          <Route exact path="/trainings/:id" element={<PrivateRoute Component={<TrainingProfile/>}/>} />
-          <Route exact path="/certify" element={<PrivateRoute Component={< Certify/>}/>} />
+          <Route path="/users" element={<PrivateRoute Component={<Users/>}/>} />
+          <Route path="/users/:id" element={<PrivateRoute Component={<UserProfile/>}/>} />
+          <Route path="/trainings" element={<PrivateRoute Component={<Trainings/>}/>} />
+          <Route path="/trainings/:id" element={<PrivateRoute Component={<TrainingProfile/>}/>} />
+          <Route path="/certify" element={<PrivateRoute Component={< Certify/>}/>} />
         </Routes>
-      </BrowserRouter>
     );
   }
 
