@@ -20,11 +20,11 @@ function Sidebar({title}) {
             <Container fluid>
               <Navbar.Toggle variant ={"warning"} aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <h2 style={{ color: 'white',margin:"auto" }}>{title}</h2>
-              <Navbar.Brand href="/home" className= "ml-auto">
+              <NavLink to="/home" className= "ml-auto">
                 <h4 style={{ color: 'white' }}>
                 <img src={logo} style={{ width: '100px',margin:"auto" }} />
                 </h4>
-              </Navbar.Brand>
+              </NavLink>
               
               <Navbar.Offcanvas 
                 id={`offcanvasNavbar-expand-${expand}`}
@@ -64,15 +64,15 @@ function Sidebar({title}) {
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
                     >
                       <NavDropdown.Item href="#userMetrics">
-                        <Nav.Link href="/stats/user" style = {{height:28,padding:2,alignContent:"center"}}>Users</Nav.Link>
+                        <NavLink to="/stats/user" activeClassName="active" className="nav-link" style = {{height:28,padding:2,alignContent:"center"}}>Users</NavLink>
                       </NavDropdown.Item>
                       
                       <NavDropdown.Item href="#trainingMetrics">
-                        <Nav.Link href="/stats/training" style = {{height:28,padding:2,alignContent:"center"}}>Trainings</Nav.Link>
+                        <NavLink to="/stats/training" activeClassName="active" className="nav-link" style = {{height:28,padding:2,alignContent:"center"}}>Trainings</NavLink>
                       </NavDropdown.Item>
                     
                       <NavDropdown.Item href="#contentMetrics">
-                        <Nav.Link href="/stats/content" style = {{height:28,padding:2,alignContent:"center"}}>Content</Nav.Link>
+                        <NavLink to="/stats/content" activeClassName="active" className="nav-link" style = {{height:28,padding:2,alignContent:"center"}}>Content</NavLink>
                       </NavDropdown.Item>
                     </NavDropdown>
                     
