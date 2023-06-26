@@ -3,6 +3,7 @@ import {Button,Container,Form,Nav,Navbar,NavDropdown,Offcanvas,Card} from 'react
 import logo from "../../assets/img/fiticon.png";
 import {useNavigate } from 'react-router-dom';
 import { TOKEN } from '../../utils/constants';
+import { NavLink } from "react-router-dom"
 
 function Sidebar({title}) {
     const navigate = useNavigate();
@@ -52,14 +53,11 @@ function Sidebar({title}) {
                   </Form>
                     <br></br>
                     <Container>
-                    <Nav.Link href="/home" >  
-                        Home
-                    </Nav.Link>
-                    
-                    <Nav.Link href="/users">Users</Nav.Link>
-                    <Nav.Link href="/trainings">Trainings</Nav.Link>
-                    <Nav.Link href="/register">Register New Admin</Nav.Link>
-                    <Nav.Link href="/certify">Certify Trainer</Nav.Link>
+                    <NavLink to="/home" activeClassName="active" className="nav-link">Home</NavLink>
+                    <NavLink to="/users" activeClassName="active" className="nav-link">Users</NavLink>
+                    <NavLink to="/trainings" activeClassName="active" className="nav-link">Trainings</NavLink>
+                    <NavLink to="/register" activeClassName="active" className="nav-link">Register New Admin</NavLink>
+                    <NavLink to="/certify" activeClassName="active" className="nav-link">Certify Trainer</NavLink>
 
                     <NavDropdown
                       title="Settings"
