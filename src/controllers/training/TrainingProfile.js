@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../utils/SideBar';
-import { Card, ListGroup, ListGroupItem, Badge, Button,Modal, Container } from "react-bootstrap";
+import { Card, ListGroup, ListGroupItem, Accordion, Table, Button,Modal, Container } from "react-bootstrap";
 import { Link, useParams,useLocation } from "react-router-dom";
 import { API_GATEWAY,TOKEN } from '../../utils/constants';
+import TrainingMediaCarousel from './TrainingMediaCarousel';
 
 export default function TrainingProfile() {
     const location = useLocation()
@@ -19,10 +20,12 @@ export default function TrainingProfile() {
       setTrainingToBlock(training);
       setShowModal(true);
     }
+  
+
 
     function handleConfirmBlockTraining() {
         // hacer petición para bloquear usuario
-        console.log(trainingToBlock.id)
+        console.log(training)
         let endpoint = API_GATEWAY + 'trainings/' + trainingToBlock.id.toString()
         const url = isBlocked ? endpoint + '/unblock ' : endpoint + '/block' 
         const accessToken = localStorage.getItem(TOKEN)
@@ -67,37 +70,111 @@ export default function TrainingProfile() {
     return (
       <div>
         <Sidebar title={"Training: "+training.title}></Sidebar>
-        
+
         <Card style = {{width:"80%",margin:"auto"}}>
           <Card.Body>
-            <Card.Title>{training.title}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              {isBlocked 
-                ?<p style = {{color:"crimson"}}>Blocked</p> 
-                :<p style = {{color:"#20c997"}}>Available</p> 
-              }
-              {training.description}      
-            </Card.Subtitle>
-            <ListGroup className="mb-3">
-              <ListGroupItem>
+            <Card.Body className="d-flex justify-content-between">
+              <div className="d-flex flex-column">
+                <Card.Title>{training.title}</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    {isBlocked 
+                      ?<p style = {{color:"crimson"}}>Blocked</p> 
+                      :<p style = {{color:"#20c997"}}>Available</p> 
+                    }      
+                </Card.Subtitle> 
+              </div>
+              <div>
+                <Container style = {{margin:"auto",textAlign:"center"}} >
+                  <Button variant="danger" onClick={() => handleBlockTraining(training)}>
+                      {isBlocked ? "Unblock Training" : "Block Training" }
+                  </Button>
+                </Container>
+              </div>
+            </Card.Body>
+
+            <TrainingMediaCarousel media = { training.media}/>
+
+            <ListGroup className="mb-3" style = {{marginLeft:20,marginRight:20}}>
+
+              <ListGroupItem style = {{backgroundColor:"orange"}}>
+                <b>Information</b> 
+              </ListGroupItem>
+              <ListGroupItem >
+                <b>Description:</b> {training.description}
+              </ListGroupItem>
+
+              <ListGroupItem >
                 <b>Type:</b> {training.type}
               </ListGroupItem>
-              <ListGroupItem>
+
+              <ListGroupItem >
                 <b>Difficulty:</b> {training.difficulty}
               </ListGroupItem>
 
-              <ListGroupItem>
-                <b>Trainer Id:</b> {training.id_trainer}
+              <ListGroupItem >
+                <b>Author:</b> {training.trainer.name + " " + training.trainer.lastname}
+              </ListGroupItem>
+
+              <ListGroupItem  >
+                <b>Trainer Id:</b> {training.trainer.id}
+              </ListGroupItem>
+
+              <ListGroupItem >
+                <b>Training Id:</b> {training.id}
               </ListGroupItem>
               
             </ListGroup>
-            <div>
-              <Container style = {{margin:"auto",textAlign:"center"}} >
-                <Button variant="danger" onClick={() => handleBlockTraining(training)}>
-                    {isBlocked ? "Unblock Training" : "Block Training" }
-                </Button>
-              </Container>
-            </div>
+
+            <Accordion style = {{marginLeft:20,marginRight:20,marginBottom:10}}>
+              <Accordion.Item eventKey="1" >
+                <Accordion.Header >Scores</Accordion.Header>
+                <Accordion.Body>
+                <Table striped bordered>
+                  <thead style = {{backgroundColor: "#20c997"}}>
+                    <tr>
+                      <th>User</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {training.scores.map((score, index) => (
+                      <tr key={index}>
+                        <td>{score.user.name + " " + score.user.lastname}</td>
+                        <td>{score.qualification}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+
+
+            <Accordion style = {{marginLeft:20,marginRight:20}}>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header >Comments</Accordion.Header>
+                <Accordion.Body>
+                  <Table striped bordered>
+                    <thead style = {{backgroundColor: "#3498db"}} >
+                      <tr>
+                        <th>User</th>
+                        <th>Comment</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {training.comments.map((comment, index) => (
+                        <tr key={index}>
+                          <td>{comment.user.name + " " + comment.user.lastname}</td>
+                          <td>{comment.detail}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+
+            
 
             {error && (
             <div className="d-flex justify-content-center align-items-center" style={{ marginTop: 10 }}>
@@ -123,7 +200,7 @@ export default function TrainingProfile() {
             </Button>
             </Modal.Footer>
         </Modal>
-        <Container style = {{textAlign:"center",width:"80%",marginTop:10}}>
+        <Container style = {{textAlign:"center",width:"80%",marginTop:10,marginBottom:20}}>
           <Link to="/trainings">Back to Trainings</Link>
         </Container>
       </div>
@@ -131,3 +208,68 @@ export default function TrainingProfile() {
 
 
 }
+
+
+
+/*
+
+
+import React from 'react';
+import { Accordion, Card, Table, Button } from 'react-bootstrap';
+
+const Post = ({ post }) => {
+  const renderScores = () => {
+    return (
+      <Table striped bordered>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Puntuación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {post.score.map((score, index) => (
+            <tr key={index}>
+              <td>{score.nombre}</td>
+              <td>{score.puntuacion}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+
+  const renderComments = () => {
+    return (
+      <Table striped bordered>
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Comentario</th>
+          </tr>
+        </thead>
+        <tbody>
+          {post.comment.map((comment, index) => (
+            <tr key={index}>
+              <td>{comment.usuario}</td>
+              <td>{comment.comentario}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+
+  return (
+    <div>
+      <h1>Título del post</h1>
+      
+    </div>
+  );
+};
+
+export default Post;
+
+
+
+*/
