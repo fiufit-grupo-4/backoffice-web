@@ -5,7 +5,7 @@ import Bootstrap from './assets/css/bootstrap/bootstrap.css';
 function App() {
   return (
     <div>
-      <link rel="stylesheet" href={Bootstrap}></link>
+      <link href={Bootstrap} type="text/html" />
       <Router></Router>
     </div>
   );

@@ -18,11 +18,10 @@ import PublicRoute from './PublicRoute';
 
 function Router() {
     return (
-      <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<PublicRoute Component={<Index/>}/>} />
           <Route exact path="/login" element={<PublicRoute Component={<Login/>}/>} />
-           <Route exact path='/register' element={<PrivateRoute Component={<Register/>}/>}/>
+          <Route exact path='/register' element={<PrivateRoute Component={<Register/>}/>}/>
           <Route exact path="/home" element={<PrivateRoute Component={<Home/>}/>} />
          
           <Route exact path="/users" element={<PrivateRoute Component={<Users/>}/>} />
@@ -35,7 +34,6 @@ function Router() {
           <Route exact path="/stats/content" element={<PrivateRoute Component={< ContentMetrics/>}/>} />
           <Route exact path="/stats/training" element={<PrivateRoute Component={< TrainingMetrics/>}/>} />
         </Routes>
-      </BrowserRouter>
     );
   }
 

@@ -3,6 +3,7 @@ import {Button,Container,Form,Nav,Navbar,NavDropdown,Offcanvas,Card} from 'react
 import logo from "../../assets/img/fiticon.png";
 import {useNavigate } from 'react-router-dom';
 import { TOKEN } from '../../utils/constants';
+import { NavLink } from "react-router-dom"
 
 function Sidebar({title}) {
     const navigate = useNavigate();
@@ -19,11 +20,11 @@ function Sidebar({title}) {
             <Container fluid>
               <Navbar.Toggle variant ={"warning"} aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <h2 style={{ color: 'white',margin:"auto" }}>{title}</h2>
-              <Navbar.Brand href="/home" className= "ml-auto">
+              <NavLink to="/home" className= "ml-auto">
                 <h4 style={{ color: 'white' }}>
                 <img src={logo} style={{ width: '100px',margin:"auto" }} />
                 </h4>
-              </Navbar.Brand>
+              </NavLink>
               
               <Navbar.Offcanvas 
                 id={`offcanvasNavbar-expand-${expand}`}
@@ -52,29 +53,26 @@ function Sidebar({title}) {
                   </Form>
                     <br></br>
                     <Container>
-                    <Nav.Link href="/home" >  
-                        Home
-                    </Nav.Link>
-                    
-                    <Nav.Link href="/users">Users</Nav.Link>
-                    <Nav.Link href="/trainings">Trainings</Nav.Link>
-                    <Nav.Link href="/register">Register New Admin</Nav.Link>
-                    <Nav.Link href="/certify">Certify Trainer</Nav.Link>
+                    <NavLink to="/home" activeClassName="active" className="nav-link">Home</NavLink>
+                    <NavLink to="/users" activeClassName="active" className="nav-link">Users</NavLink>
+                    <NavLink to="/trainings" activeClassName="active" className="nav-link">Trainings</NavLink>
+                    <NavLink to="/register" activeClassName="active" className="nav-link">Register New Admin</NavLink>
+                    <NavLink to="/certify" activeClassName="active" className="nav-link">Certify Trainer</NavLink>
 
                     <NavDropdown
                       title="Metrics"
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
                     >
                       <NavDropdown.Item href="#userMetrics">
-                        <Nav.Link href="/stats/user" style = {{height:28,padding:2,alignContent:"center"}}>Users</Nav.Link>
+                        <NavLink to="/stats/user" activeClassName="active" className="nav-link" style = {{height:28,padding:2,alignContent:"center"}}>Users</NavLink>
                       </NavDropdown.Item>
                       
                       <NavDropdown.Item href="#trainingMetrics">
-                        <Nav.Link href="/stats/training" style = {{height:28,padding:2,alignContent:"center"}}>Trainings</Nav.Link>
+                        <NavLink to="/stats/training" activeClassName="active" className="nav-link" style = {{height:28,padding:2,alignContent:"center"}}>Trainings</NavLink>
                       </NavDropdown.Item>
                     
                       <NavDropdown.Item href="#contentMetrics">
-                        <Nav.Link href="/stats/content" style = {{height:28,padding:2,alignContent:"center"}}>Content</Nav.Link>
+                        <NavLink to="/stats/content" activeClassName="active" className="nav-link" style = {{height:28,padding:2,alignContent:"center"}}>Content</NavLink>
                       </NavDropdown.Item>
                     </NavDropdown>
                     
